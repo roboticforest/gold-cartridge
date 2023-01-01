@@ -15,6 +15,10 @@ message(NOTICE ${SDL2_IMAGE_INCLUDE_DIRS})
 message(NOTICE ${SDL2_LIBRARIES})
 message(NOTICE ${SDL2_IMAGE_LIBRARIES})
 
+message(NOTICE "DEFAULT OUTPUT DIR:")
+message(NOTICE "${PROJECT_BINARY_DIR}")
+
+file(COPY "resources" DESTINATION "${PROJECT_BINARY_DIR}")
 
 add_executable(gold_cartridge main.cpp)
 target_link_libraries(gold_cartridge PUBLIC ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
