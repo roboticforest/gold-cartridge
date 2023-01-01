@@ -1,3 +1,23 @@
+# CLion specific project files
+.idea/*
+
+# Build Directories
+*build*/*
+
+# External Libraries
+lib/*
+
+# Generated Documentation Files
+doc/*
+
+# Generated Files
+ProjectVersion
+
+# Installation Exports
+*-Debug/
+*-Release/
+
+#CMake
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
