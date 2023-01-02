@@ -100,8 +100,20 @@ void draw() {
 
     // SDL's built-in line drawing.
     SDL_SetRenderDrawColor(drawing_area, 0, 0, 0, 255);
-    SDL_RenderDrawLine(drawing_area, 60, 0, 70, 1);
+    SDL_RenderDrawLine(drawing_area, 60, 0, 69, 1);
+
+    // SDL_gfx line drawing.
+    lineColor(drawing_area, 80, 0, 89, 1, 0xffff0000);
+    aalineColor(drawing_area, 100, 0 ,109, 1, 0xffff0000);
+
+    circleColor(drawing_area, 60, 50, 0, 0x7f000000);
+    circleColor(drawing_area, 70, 50, 1, 0x7f000000);
+    circleColor(drawing_area, 80, 50, 2, 0x7f000000);
+    circleColor(drawing_area, 90, 50, 3, 0x7f000000);
+    circleColor(drawing_area, 100, 50, 4, 0x7f000000);
+
     
+
     SDL_RenderPresent(drawing_area);
 }
 
