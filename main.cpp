@@ -11,6 +11,8 @@ SDL_Window* main_window = nullptr;
 SDL_Renderer* drawing_area = nullptr;
 SDL_Texture* test_image = nullptr;
 
+SDL_Color DEFAULT_CLEAR_COLOR;
+
 void log_SDL_error(std::string message) {
     std::cerr << message << std::endl;
     std::cerr << "SDL says: " << SDL_GetError << std::endl;
@@ -52,7 +54,10 @@ void startup() {
     // dump_render_info(drawing_area, "Default Window Renderer");
     drawing_area = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED);
     //dump_render_info(drawing_area, "New Window Renderer");
-    SDL_SetRenderDrawColor(drawing_area, 0, 170, 0, 255);
+    DEFAULT_CLEAR_COLOR.a = 225;
+    DEFAULT_CLEAR_COLOR.r = 0;
+    DEFAULT_CLEAR_COLOR.g = 170;
+    DEFAULT_CLEAR_COLOR.b = 0;
 
     // SDL_Windows are not made with default renderers (though they are made with default surfaces).
 
@@ -80,16 +85,22 @@ void shutdown() {
 }
 
 void draw() {
+    SDL_SetRenderDrawColor(drawing_area, DEFAULT_CLEAR_COLOR.r, DEFAULT_CLEAR_COLOR.g, DEFAULT_CLEAR_COLOR.b, DEFAULT_CLEAR_COLOR.a);
     SDL_RenderClear(drawing_area);
 
     // SDL_RenderCopy(drawing_area, test_image, nullptr, nullptr); // Draws texture to fill drawing area.
 
+    // Texture rendering.
     SDL_Rect texture_scaler;
     texture_scaler.x = 0;
     texture_scaler.y = 0;
     texture_scaler.w = 55;
     texture_scaler.h = 55;
     SDL_RenderCopy(drawing_area, test_image, nullptr, &texture_scaler);
+
+    // SDL's built-in line drawing.
+    SDL_SetRenderDrawColor(drawing_area, 0, 0, 0, 255);
+    SDL_RenderDrawLine(drawing_area, 60, 0, 70, 1);
     
     SDL_RenderPresent(drawing_area);
 }
