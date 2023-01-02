@@ -9,7 +9,7 @@ const int WINDOW_HEIGHT = 768;
 
 SDL_Window* main_window = nullptr;
 SDL_Renderer* drawing_area = nullptr;
-SDL_Surface* test_image = nullptr;
+SDL_Texture* test_image = nullptr;
 
 void log_SDL_error(std::string message) {
     std::cerr << message << std::endl;
@@ -57,18 +57,41 @@ void startup() {
     // SDL_Windows are not made with default renderers (though they are made with default surfaces).
 
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {log_SDL_error("PNG file loader could not initialize!"); abort();}
-    test_image = IMG_Load("resources/pixel-art-ball.png");
-    if (!test_image) {log_SDL_error("Test graphic could not be loaded!"); abort();}
+
+    SDL_Surface * png_img = IMG_Load("resources/pixel-art-ball.png");
+    if (!png_img) {log_SDL_error("Test graphic could not be loaded!"); abort();}
+    test_image = SDL_CreateTextureFromSurface(drawing_area, png_img);
+    SDL_FreeSurface(png_img);
+    if (!test_image) { log_SDL_error("Could not convert test image to a texture!"); abort();}
 }
 
 void shutdown() {
+    SDL_DestroyTexture(test_image);
+    test_image = nullptr;
+
     SDL_DestroyRenderer(drawing_area);
     drawing_area = nullptr;
+
     SDL_DestroyWindow(main_window);
     main_window = nullptr;
 
     IMG_Quit();
     SDL_Quit();
+}
+
+void draw() {
+    SDL_RenderClear(drawing_area);
+
+    // SDL_RenderCopy(drawing_area, test_image, nullptr, nullptr); // Draws texture to fill drawing area.
+
+    SDL_Rect texture_scaler;
+    texture_scaler.x = 0;
+    texture_scaler.y = 0;
+    texture_scaler.w = 55;
+    texture_scaler.h = 55;
+    SDL_RenderCopy(drawing_area, test_image, nullptr, &texture_scaler);
+    
+    SDL_RenderPresent(drawing_area);
 }
 
 int main() {
@@ -82,8 +105,7 @@ int main() {
                 quit = true;
             }
         }
-        SDL_RenderClear(drawing_area);
-        SDL_RenderPresent(drawing_area);
+        draw();
     }
 
     shutdown();
