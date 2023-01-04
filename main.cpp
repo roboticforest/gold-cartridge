@@ -36,6 +36,7 @@ void dump_render_info(SDL_Renderer * sdl_renderer, std::string label) {
 }
 
 void startup() {
+    // Initialize the SDL.
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {log_SDL_error("Audio Playback failed to initialize!"); abort();}
     if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0) {log_SDL_error("Events Polling failed to initialize!"); abort();}
     if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {log_SDL_error("Game Controllers failed to initialize!"); abort();}
@@ -44,6 +45,7 @@ void startup() {
     if (SDL_InitSubSystem(SDL_INIT_TIMER) < 0) {log_SDL_error("Timers failed to initialize!"); abort();}
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {log_SDL_error("Video failed to initialize!"); abort();}
 
+    // Create the application window.
     main_window = SDL_CreateWindow("Main Window",
                                    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    WINDOW_WIDTH, WINDOW_HEIGHT,
@@ -54,20 +56,22 @@ void startup() {
     // dump_render_info(drawing_area, "Default Window Renderer");
     drawing_area = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED);
     //dump_render_info(drawing_area, "New Window Renderer");
-    DEFAULT_CLEAR_COLOR.a = 225;
-    DEFAULT_CLEAR_COLOR.r = 0;
-    DEFAULT_CLEAR_COLOR.g = 170;
-    DEFAULT_CLEAR_COLOR.b = 0;
+    DEFAULT_CLEAR_COLOR = {0, 170, 0, 255};
 
-    // SDL_Windows are not made with default renderers (though they are made with default surfaces).
+    // NOTE: SDL_Windows are not made with default renderers (though they are made with default surfaces).
 
+    // Initialize SDL_image
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {log_SDL_error("PNG file loader could not initialize!"); abort();}
 
+    // Load a test graphic using the library.
     SDL_Surface * png_img = IMG_Load("resources/pixel-art-ball.png");
     if (!png_img) {log_SDL_error("Test graphic could not be loaded!"); abort();}
     test_image = SDL_CreateTextureFromSurface(drawing_area, png_img);
     SDL_FreeSurface(png_img);
     if (!test_image) { log_SDL_error("Could not convert test image to a texture!"); abort();}
+
+    // Initialize SDL_ttf.
+    
 }
 
 void shutdown() {
@@ -88,31 +92,31 @@ void draw() {
     SDL_SetRenderDrawColor(drawing_area, DEFAULT_CLEAR_COLOR.r, DEFAULT_CLEAR_COLOR.g, DEFAULT_CLEAR_COLOR.b, DEFAULT_CLEAR_COLOR.a);
     SDL_RenderClear(drawing_area);
 
+    // Texture rendering test.
     // SDL_RenderCopy(drawing_area, test_image, nullptr, nullptr); // Draws texture to fill drawing area.
 
-    // Texture rendering.
-    SDL_Rect texture_scaler;
-    texture_scaler.x = 0;
-    texture_scaler.y = 0;
-    texture_scaler.w = 55;
-    texture_scaler.h = 55;
+    // Texture rendering test.
+    SDL_Rect texture_scaler = {0, 0, 55, 55}; // Draw texture at specified size and location.
     SDL_RenderCopy(drawing_area, test_image, nullptr, &texture_scaler);
 
-    // SDL's built-in line drawing.
+    // SDL's built-in line drawing test.
     SDL_SetRenderDrawColor(drawing_area, 0, 0, 0, 255);
     SDL_RenderDrawLine(drawing_area, 60, 0, 69, 1);
 
-    // SDL_gfx line drawing.
+    // SDL_gfx line drawing test.
     lineColor(drawing_area, 80, 0, 89, 1, 0xffff0000);
     aalineColor(drawing_area, 100, 0 ,109, 1, 0xffff0000);
 
+    // SDL_gfx circle drawing test.
     circleColor(drawing_area, 60, 50, 0, 0x7f000000);
     circleColor(drawing_area, 70, 50, 1, 0x7f000000);
     circleColor(drawing_area, 80, 50, 2, 0x7f000000);
     circleColor(drawing_area, 90, 50, 3, 0x7f000000);
     circleColor(drawing_area, 100, 50, 4, 0x7f000000);
 
-    
+    // SDL_ttf text and font drawing test.
+
+
 
     SDL_RenderPresent(drawing_area);
 }
