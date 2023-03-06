@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL2_gfxPrimitives.h>
+// #include <SDL2_gfxPrimitives.h>
 #include <SDL_ttf.h>
 
 const int WINDOW_WIDTH = 1024;
@@ -18,12 +18,12 @@ SDL_Color CLEAR_COLOR = {0, 128, 0, 255};
 SDL_Color TEXT_COLOR = {0, 0, 0, 255};
 SDL_Rect TEXT_AREA = {0, 0, 0, 0};
 
-void log_SDL_error(std::string message) {
+void log_SDL_error(const std::string & message) {
     std::cerr << message << std::endl;
-    std::cerr << "SDL says: " << SDL_GetError << std::endl;
+    std::cerr << "SDL says: " << SDL_GetError() << std::endl;
 }
 
-void dump_render_info(SDL_Renderer * sdl_renderer, std::string label) {
+[[maybe_unused]] void dump_render_info(SDL_Renderer * sdl_renderer, const std::string & label) {
 
     SDL_RendererInfo renderer_details;
     SDL_GetRendererInfo(sdl_renderer, &renderer_details);
@@ -91,7 +91,6 @@ void startup() {
 
     SDL_FreeSurface(text_render);
     text_render = nullptr;
-
 }
 
 void shutdown() {
@@ -129,15 +128,15 @@ void draw() {
     SDL_RenderDrawLine(drawing_area, 60, 0, 69, 1);
 
     // SDL_gfx line drawing test.
-    lineColor(drawing_area, 80, 0, 89, 1, 0xffff0000);
-    aalineColor(drawing_area, 100, 0 ,109, 1, 0xffff0000);
+//    lineColor(drawing_area, 80, 0, 89, 1, 0xffff0000);
+//    aalineColor(drawing_area, 100, 0 ,109, 1, 0xffff0000);
 
     // SDL_gfx circle drawing test.
-    circleColor(drawing_area, 60, 50, 0, 0x7f000000);
-    circleColor(drawing_area, 70, 50, 1, 0x7f000000);
-    circleColor(drawing_area, 80, 50, 2, 0x7f000000);
-    circleColor(drawing_area, 90, 50, 3, 0x7f000000);
-    circleColor(drawing_area, 100, 50, 4, 0x7f000000);
+//    circleColor(drawing_area, 60, 50, 0, 0x7f000000);
+//    circleColor(drawing_area, 70, 50, 1, 0x7f000000);
+//    circleColor(drawing_area, 80, 50, 2, 0x7f000000);
+//    circleColor(drawing_area, 90, 50, 3, 0x7f000000);
+//    circleColor(drawing_area, 100, 50, 4, 0x7f000000);
 
     // SDL_ttf text and font drawing test.
     SDL_RenderCopy(drawing_area, text_texture, nullptr, &TEXT_AREA);
@@ -146,7 +145,7 @@ void draw() {
     SDL_RenderPresent(drawing_area);
 }
 
-int main() {
+int main(int num_args, char ** args) {
     startup();
 
     SDL_Event e;
