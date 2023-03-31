@@ -10,7 +10,7 @@ target_link_directories(gold_cartridge PUBLIC ${SDL2_BINDIR} ${SDL2_LIBDIR})
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND WIN32)
     message(STATUS "Debug build on Windows. Allowing console to be visible.")
-else()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release" AND WIN32)
     message(STATUS "Release build on Windows. Hiding console.")
     target_link_options(gold_cartridge PUBLIC -mwindows)
 endif()
