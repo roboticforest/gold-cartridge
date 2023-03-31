@@ -10,7 +10,7 @@
 extern SDL_Window  * MAIN_WINDOW;
 extern SDL_Renderer* MAIN_RENDERER;
 extern TTF_Font    * TEST_FONT;
-extern SDL_Color     TEXT_COLOR;
+extern SDL_Color     TEST_FONT_COLOR;
 
 Button::Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label,
                std::function<void()> button_action) :
@@ -51,7 +51,7 @@ void Button::draw() {
     SDL_SetRenderDrawColor(MAIN_RENDERER, 238, 238, 236, 255);
     SDL_RenderFillRect(MAIN_RENDERER, &this->button_area);
 
-    SDL_Surface* label_render = TTF_RenderText_Blended(TEST_FONT, this->text_label.c_str(), TEXT_COLOR);
+    SDL_Surface* label_render = TTF_RenderText_Blended(TEST_FONT, this->text_label.c_str(), TEST_FONT_COLOR);
     if (label_render) {
         SDL_Texture* label_texture = SDL_CreateTextureFromSurface(MAIN_RENDERER, label_render);
         if (label_texture) {
