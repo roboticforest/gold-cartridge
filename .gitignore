@@ -12,12 +12,13 @@ doc/*
 
 # Generated Files
 ProjectVersion
+*.md.backup
 
 # Installation Exports
 *-Debug/
 *-Release/
 
-#CMake
+# CMake
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
