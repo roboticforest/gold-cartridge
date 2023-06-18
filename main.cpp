@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 
 #include "button.h"
+#include "test_logging.h"
 
 SDL_Window *MAIN_WINDOW = nullptr;
 const int WINDOW_WIDTH = 1024;
@@ -41,15 +42,6 @@ Button test_button(200, 250, 140, 50, "Test Button!", []() -> void {
 });
 
 /**
- * A utility function for logging a more meaningful error message ahead of SDL's built-in error descriptions.
- * @param message A short description of program error that occurred.
- */
-void log_error(const std::string &message) {
-    std::cerr << message << std::endl;
-    std::cerr << "SDL2 last reported: " << SDL_GetError() << std::endl;
-}
-
-/**
  * Assert that a given task has completed successfully, otherwise terminate the application.
  * @param task A function returning true/false to indicate it was successful.
  * @param task_msg An optional description of the task about to be performed.
@@ -63,28 +55,6 @@ void assert_task(const std::function<bool()> &task,
         if (fail_msg) log_error(*fail_msg);
         abort();
     }
-}
-
-/**
- * Dumps information about the given renderer to the console for debugging purposes.
- * @param sdl_renderer The renderer to extract properties from.
- * @param label A short human-readable description of the render.
- */
-[[maybe_unused]] void dump_render_info(SDL_Renderer *sdl_renderer, const std::string &label) {
-
-    SDL_RendererInfo renderer_details;
-    SDL_GetRendererInfo(sdl_renderer, &renderer_details);
-
-    std::cout << label << std::endl;
-    std::cout << "Renderer Details:" << std::endl;
-    std::cout << "Name: " << renderer_details.name << std::endl;
-    std::cout << "Max Width: " << renderer_details.max_texture_width << std::endl;
-    std::cout << "Max Height: " << renderer_details.max_texture_height << std::endl;
-    std::cout << "Texture Fmt Cnt: " << renderer_details.num_texture_formats << std::endl;
-    std::cout << "SDL_RENDERER_SOFTWARE:      " << ((renderer_details.flags & SDL_RENDERER_SOFTWARE) > 0) << std::endl;
-    std::cout << "SDL_RENDERER_ACCELERATED:   " << ((renderer_details.flags & SDL_RENDERER_ACCELERATED) > 0) << std::endl;
-    std::cout << "SDL_RENDERER_PRESENTVSYNC:  " << ((renderer_details.flags & SDL_RENDERER_PRESENTVSYNC) > 0) << std::endl;
-    std::cout << "SDL_RENDERER_TARGETTEXTURE: " << ((renderer_details.flags & SDL_RENDERER_TARGETTEXTURE) > 0) << std::endl;
 }
 
 /**
