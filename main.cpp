@@ -8,6 +8,7 @@
 
 #include "button.h"
 #include "test_logging.h"
+#include "test_asserts.h"
 
 SDL_Window *MAIN_WINDOW = nullptr;
 const int WINDOW_WIDTH = 1024;
@@ -40,22 +41,6 @@ Button test_button(200, 250, 140, 50, "Test Button!", []() -> void {
         green       = false;
     }
 });
-
-/**
- * Assert that a given task has completed successfully, otherwise terminate the application.
- * @param task A function returning true/false to indicate it was successful.
- * @param task_msg An optional description of the task about to be performed.
- * @param fail_msg An optional message to log if the task fails.
- */
-void assert_task(const std::function<bool()> &task,
-                 const std::optional<std::string>& task_msg = std::nullopt,
-                 const std::optional<std::string>& fail_msg = std::nullopt) {
-    if (task_msg) std::cout << *task_msg << std::endl;
-    if (!task()) {
-        if (fail_msg) log_error(*fail_msg);
-        abort();
-    }
-}
 
 /**
  * Initialize all of SDL's core subsystems, logging any errors and terminating the program if they occur.
@@ -142,7 +127,7 @@ void load_test_graphic() {
 
     if (!png_img) {
         std::string error_msg = "The test image \"" + TEST_IMAGE_FILE_PATH + "\" could not be loaded.";
-        log_error(error_msg);
+        log_SDL2_error(error_msg);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Image Not Found",
                                  "Test graphic could not be loaded! See log for more details.", MAIN_WINDOW);
     } else {
