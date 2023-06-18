@@ -1,6 +1,5 @@
 #include <iostream>
 #include <optional>
-#include <functional>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -290,7 +289,10 @@ void draw() {
     SDL_RenderPresent(MAIN_RENDERER);
 }
 
-int main(int num_args, char **args) {
+int main(int num_args, char** args) {
+    (void) num_args; // Ignored.
+    (void) args;     // Ignored.
+
     initialize_everything();
 
     while (!QUITTING) {
