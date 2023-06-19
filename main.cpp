@@ -5,99 +5,11 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "button.h"
 #include "test_logging.h"
 #include "test_asserts.h"
+#include "sdl2_usage.h"
 
-SDL_Window *MAIN_WINDOW = nullptr;
-const int WINDOW_WIDTH = 1024;
-const int WINDOW_HEIGHT = 768;
-
-bool QUITTING = false;
-
-SDL_Renderer *MAIN_RENDERER = nullptr;
-SDL_Color CLEAR_COLOR = {0, 128, 0, 255};
-
-const std::string TEST_IMAGE_FILE_PATH = "resources/pixel-art-ball.png";
-SDL_Texture *TEST_IMAGE = nullptr;
-
-const std::string TEST_FONT_FILE_PATH = "resources/playfair-display-font/PlayfairDisplayRegular-ywLOY.ttf";
-TTF_Font *TEST_FONT = nullptr;
-SDL_Color TEST_FONT_COLOR = {0, 0, 0, 255};
-const int TEST_FONT_SIZE_PTS = 14;
-std::string TEST_SENTENCE = "Cwm fjord bank glyphs vext quiz";
-SDL_Texture *TEXT_RENDER_TEXTURE = nullptr;
-SDL_Rect TEXT_RENDER_LOCATION = {};
-
-Button test_button(200, 250, 140, 50, "Test Button!", []() -> void {
-    static bool green = false;
-    if (!green) {
-        CLEAR_COLOR = {0, 255, 0, 255};
-        green       = true;
-    }
-    else {
-        CLEAR_COLOR = {255, 204, 204, 255};
-        green       = false;
-    }
-});
-
-/**
- * Initialize all of SDL's core subsystems, logging any errors and terminating the program if they occur.
- */
-void prep_SDL2() {
-    assert_task([]() { return SDL_InitSubSystem(SDL_INIT_VIDEO) == 0; },
-                "Starting SDL2's Video subsystem...",
-                "Video failed to initialize!");
-
-    assert_task([]() -> bool { return SDL_InitSubSystem(SDL_INIT_AUDIO) == 0; },
-                "Starting SDL2's Audio subsystem...",
-                "Audio playback failed to initialize!");
-
-    assert_task([]() { return SDL_InitSubSystem(SDL_INIT_EVENTS) == 0; },
-                "Starting SDL2's Event handling subsystem...",
-                "Event handling failed to initialize!");
-
-    assert_task([]() { return SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == 0; },
-                "Starting SDL2's Gamepad and Joystick Input subsystems...",
-                "Game Controller Input handling failed to initialize!");
-
-    assert_task([]() { return SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0; },
-                "Starting SDL2's Haptic Feedback subsystem...",
-                "Haptic Feedback failed to initialize!");
-
-    assert_task([]() { return SDL_InitSubSystem(SDL_INIT_TIMER) == 0; },
-                "Starting SDL2's Timer subsystem...",
-                "Timers failed to initialize!");
-}
-
-/**
- * Create the application's main window, terminating the application if one can not be made.
- */
-void prep_window() {
-    auto create_window = []() {
-        MAIN_WINDOW = SDL_CreateWindow("Main Window",
-                                       SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                       WINDOW_WIDTH, WINDOW_HEIGHT,
-                                       SDL_WINDOW_SHOWN);
-        return MAIN_WINDOW != nullptr;
-    };
-    assert_task(create_window,
-                "Creating main application window...",
-                "Main window could not be created!");
-}
-
-/**
- * Create the application's primary drawing context, terminating the application if that fails.
- */
-void prep_renderer() {
-    auto create_renderer = []() {
-        MAIN_RENDERER = SDL_CreateRenderer(MAIN_WINDOW, -1, SDL_RENDERER_ACCELERATED);
-        return MAIN_RENDERER != nullptr;
-    };
-    assert_task(create_renderer,
-                "Creating primary rendering context...",
-                "A rendering context could not be created!");
-}
+#include "globals.h"
 
 /**
  * Initialize the SDL_image library to load desired image formats.

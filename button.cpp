@@ -3,6 +3,7 @@
 //
 
 #include "button.h"
+#include "globals.cpp"
 
 #include <iostream>
 #include <SDL_ttf.h>
