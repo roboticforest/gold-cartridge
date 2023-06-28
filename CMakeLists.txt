@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(gold_cartridge)
 
 set(CMAKE_CXX_STANDARD 20)
-add_executable(gold_cartridge main.cpp button.cpp test_logging.cpp test_asserts.cpp sdl2_usage.cpp globals.h)
+add_executable(gold_cartridge main.cpp button.cpp test_logging.cpp test_asserts.cpp sdl2_usage.cpp globals.cpp)
 
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})

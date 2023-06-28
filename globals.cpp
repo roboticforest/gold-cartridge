@@ -1,6 +1,3 @@
-#ifndef GOLD_CARTRIDGE_GLOBALS_CPP
-#define GOLD_CARTRIDGE_GLOBALS_CPP
-
 #include "globals.h"
 
 // General and SDL2 base.
@@ -44,5 +41,3 @@ SDL_Color         TEST_FONT_COLOR     = {0, 0, 0, 255};
 std::string  TEST_SENTENCE = "Cwm fjord bank glyphs vext quiz";
 SDL_Texture* TEXT_RENDER_TEXTURE = nullptr;
 SDL_Rect     TEXT_RENDER_LOCATION = {};
-
-#endif //GOLD_CARTRIDGE_GLOBALS_CPP

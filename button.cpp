@@ -3,15 +3,10 @@
 //
 
 #include "button.h"
-#include "globals.cpp"
+#include "globals.h"
 
 #include <iostream>
 #include <SDL_ttf.h>
-
-extern SDL_Window  * MAIN_WINDOW;
-extern SDL_Renderer* MAIN_RENDERER;
-extern TTF_Font    * TEST_FONT;
-extern SDL_Color     TEST_FONT_COLOR;
 
 Button::Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label,
                std::function<void()> button_action) :

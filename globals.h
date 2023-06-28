@@ -26,7 +26,7 @@ extern const std::string TEST_IMAGE_FILE_PATH;
 extern SDL_Texture* TEST_IMAGE;
 
 // Variables used to test SDL2_ttf.
-// Note, not all of the following data types were provided by SDL_ttf, just used to test the library.
+// Note, not all the following data types were provided by SDL_ttf, just used to test the library.
 
 extern TTF_Font*         TEST_FONT;
 extern const std::string TEST_FONT_FILE_PATH;
