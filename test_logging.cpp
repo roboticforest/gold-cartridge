@@ -2,20 +2,6 @@
 
 #include <iostream>
 
-/**
- * A utility function for logging a more meaningful error message ahead of SDL's built-in error descriptions.
- * @param message A short description of program error that occurred.
- */
-[[maybe_unused]] void log_SDL2_error(const std::string& message) {
-    std::cerr << message << std::endl;
-    std::cerr << "SDL2 last reported: " << SDL_GetError() << std::endl;
-}
-
-/**
- * Dumps information about the given renderer to the console for debugging purposes.
- * @param renderer The renderer to extract properties from.
- * @param renderer_name A short meaningful label of the render. For example: "Main Renderer" or "Texture Render".
- */
 [[maybe_unused]] void dump_render_info(SDL_Renderer* renderer, const std::string& renderer_name) {
 
     SDL_RendererInfo renderer_details;
@@ -31,4 +17,17 @@
     std::cout << "SDL_RENDERER_ACCELERATED:   " << ((renderer_details.flags & SDL_RENDERER_ACCELERATED) > 0) << std::endl;
     std::cout << "SDL_RENDERER_PRESENTVSYNC:  " << ((renderer_details.flags & SDL_RENDERER_PRESENTVSYNC) > 0) << std::endl;
     std::cout << "SDL_RENDERER_TARGETTEXTURE: " << ((renderer_details.flags & SDL_RENDERER_TARGETTEXTURE) > 0) << std::endl;
+}
+
+[[maybe_unused]] void log_status(const std::string& message) {
+    std::cout << message << std::endl;
+}
+
+[[maybe_unused]] void log_error(const std::string& message) {
+    std::cerr << message << std::endl;
+}
+
+[[maybe_unused]] void log_SDL2_error(const std::string& message) {
+    std::cerr << message << std::endl;
+    std::cerr << "SDL2 last reported: " << SDL_GetError() << std::endl;
 }
