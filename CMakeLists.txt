@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(gold_cartridge)
 
 set(CMAKE_CXX_STANDARD 20) # CMake global.
-set(SOURCE_FILES main.cpp button.cpp test_logging.cpp test_asserts.cpp sdl2_usage.cpp globals.cpp)
+set(SOURCE_FILES main.cpp button.cpp test_logging.cpp test_asserts.cpp sdl2_testing.cpp globals.cpp)
 
 add_executable(gold_cartridge ${SOURCE_FILES})
 
