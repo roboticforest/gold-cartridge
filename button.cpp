@@ -1,11 +1,16 @@
-//
-// Created by david on 3/13/23.
-//
+/**
+ * @author David Vitez (AKA: Robotic Forest)
+ * @copyright All rights reserved © 2023 David Vitez
+ * @license This Source Code Form is subject to the terms of the Mozilla Public
+ *          License, v. 2.0. If a copy of the MPL was not distributed with this
+ *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 
 #include "button.h"
 #include "globals.h"
 
 #include <iostream>
+
 #include <SDL_ttf.h>
 
 Button::Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label,
@@ -81,9 +86,9 @@ void Button::draw() {
 
 bool Button::contains_point(int x, int y) const {
     return x >= this->button_area.x &&
-            x <= this->button_area.x + this->button_area.w &&
-            y >= this->button_area.y &&
-            y <= this->button_area.y + this->button_area.h;
+           x <= this->button_area.x + this->button_area.w &&
+           y >= this->button_area.y &&
+           y <= this->button_area.y + this->button_area.h;
 }
 
 

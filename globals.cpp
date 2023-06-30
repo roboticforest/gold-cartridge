@@ -1,6 +1,15 @@
+/**
+ * @author David Vitez (AKA: Robotic Forest)
+ * @copyright All rights reserved © 2023 David Vitez
+ * @license This Source Code Form is subject to the terms of the Mozilla Public
+ *          License, v. 2.0. If a copy of the MPL was not distributed with this
+ *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 #include "globals.h"
 
-// General and SDL2 base.
+// General Application & SDL2 Variables
+// ====================================
 
 SDL_Window* MAIN_WINDOW = nullptr;
 const int   WINDOW_WIDTH  = 1024;
@@ -26,12 +35,14 @@ Button test_button(200, 250,
     }
 });
 
-// SDL2_image.
+// SDL Image Test Variables
+// =========================
 
 const std::string TEST_IMAGE_FILE_PATH = "resources/pixel-art-ball.png";
 SDL_Texture*      TEST_IMAGE = nullptr;
 
-// SDL2_ttf
+// SDL TTF Test Variables
+// ======================
 
 TTF_Font*         TEST_FONT = nullptr;
 const std::string TEST_FONT_FILE_PATH = "resources/playfair-display-font/PlayfairDisplayRegular-ywLOY.ttf";

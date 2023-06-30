@@ -1,3 +1,11 @@
+/**
+ * @author David Vitez (AKA: Robotic Forest)
+ * @copyright All rights reserved © 2023 David Vitez
+ * @license This Source Code Form is subject to the terms of the Mozilla Public
+ *          License, v. 2.0. If a copy of the MPL was not distributed with this
+ *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef GOLD_CARTRIDGE_GLOBALS_H
 #define GOLD_CARTRIDGE_GLOBALS_H
 
@@ -6,35 +14,42 @@
 
 #include "button.h"
 
-// General variables and items dependant only on SDL2.
+// General Application & SDL2 Variables
+// ====================================
 
-extern SDL_Window* MAIN_WINDOW;
-extern const int   WINDOW_WIDTH;
-extern const int   WINDOW_HEIGHT;
+// Application Window
+extern SDL_Window * MAIN_WINDOW;
+extern const int    WINDOW_WIDTH;
+extern const int    WINDOW_HEIGHT;
 
-extern SDL_Renderer* MAIN_RENDERER;
-extern SDL_Color     CLEAR_COLOR;
+// Drawing Context
+extern SDL_Renderer * MAIN_RENDERER;
+extern SDL_Color      CLEAR_COLOR;
 
+// General Run Status
 extern bool QUITTING;
 
+// SDL2 Test Buttons
 extern Button test_button;
 
-// Variables used to test SDL2_image.
-// Note, these data types aren't necessarily provided by SDL_image, just used to test it.
+// SDL Image Test Variables
+// =========================
 
 extern const std::string TEST_IMAGE_FILE_PATH;
-extern SDL_Texture* TEST_IMAGE;
+extern SDL_Texture *     TEST_IMAGE;
 
-// Variables used to test SDL2_ttf.
-// Note, not all the following data types were provided by SDL_ttf, just used to test the library.
+// SDL TTF Test Variables
+// ======================
 
-extern TTF_Font*         TEST_FONT;
+// Font, Size, and Color.
+extern TTF_Font *        TEST_FONT;
 extern const std::string TEST_FONT_FILE_PATH;
 extern const int         TEST_FONT_SIZE_PTS;
 extern SDL_Color         TEST_FONT_COLOR;
 
-extern std::string  TEST_SENTENCE;
-extern SDL_Texture* TEXT_RENDER_TEXTURE;
-extern SDL_Rect     TEXT_RENDER_LOCATION;
+// Word/Sentence Rendering
+extern std::string   TEST_SENTENCE;
+extern SDL_Texture * TEXT_RENDER_TEXTURE;
+extern SDL_Rect      TEXT_RENDER_LOCATION;
 
 #endif //GOLD_CARTRIDGE_GLOBALS_H
