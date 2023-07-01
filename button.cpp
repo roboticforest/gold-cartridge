@@ -7,11 +7,11 @@
  */
 
 #include "button.h"
-#include "globals.h"
-
-#include <iostream>
 
 #include <SDL_ttf.h>
+
+#include "globals.h"
+#include "test_logging.h"
 
 Button::Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label,
                std::function<void()> button_action) :
@@ -49,39 +49,45 @@ void Button::handle_event(SDL_Event& event) {
 }
 
 void Button::draw() {
+    // Fill the button area with color.
     SDL_SetRenderDrawColor(MAIN_RENDERER, 238, 238, 236, 255);
     SDL_RenderFillRect(MAIN_RENDERER, &this->button_area);
 
-    SDL_Surface* label_render = TTF_RenderText_Blended(TEST_FONT, this->text_label.c_str(), TEST_FONT_COLOR);
-    if (label_render) {
-        SDL_Texture* label_texture = SDL_CreateTextureFromSurface(MAIN_RENDERER, label_render);
-        if (label_texture) {
-            SDL_Rect label_area = {
-                    std::max(this->button_area.x,
-                             this->button_area.x + (this->button_area.w / 2) - (label_render->w / 2)),
-                    std::max(this->button_area.y,
-                             this->button_area.y + (this->button_area.h / 2) - (label_render->h / 2)),
-                    std::min(label_render->w, this->button_area.w),
-                    std::min(label_render->h, this->button_area.h)
-            };
-
-            int      horizontal_pixel_clip = std::max(label_render->w - button_area.w, 0);
-            int      vertical_pixel_clip   = std::max(label_render->h - button_area.h, 0);
-            SDL_Rect text_clip_area        = {
-                    horizontal_pixel_clip / 2,
-                    vertical_pixel_clip / 2,
-                    label_render->w - horizontal_pixel_clip,
-                    label_render->h - vertical_pixel_clip
-            };
-
-            SDL_RenderCopy(MAIN_RENDERER, label_texture, &text_clip_area, &label_area);
-            SDL_DestroyTexture(label_texture);
-        }
-        SDL_FreeSurface(label_render);
+    // Convert the label text into a displayable image, saving that to a texture for rendering to the screen.
+    SDL_Surface* initial_label_render = TTF_RenderText_Blended(TEST_FONT, this->text_label.c_str(), TEST_FONT_COLOR);
+    if (!initial_label_render) {
+        log_error("Unable to render button label to a drawing surface.");
+        return;
     }
-    else {
-        std::cerr << "Something broke in the button text rendering." << std::endl;
+
+    SDL_Texture* final_label_texture = SDL_CreateTextureFromSurface(MAIN_RENDERER, initial_label_render);
+    SDL_FreeSurface(initial_label_render);
+
+    if (!final_label_texture) {
+        log_error("Unable to convert button label drawing surface to a texture.");
+        return;
     }
+
+    // Calculate a valid label drawing area within the button's visual area on screen.
+    int      label_x               = std::max(this->button_area.x, this->button_area.x + (this->button_area.w / 2) - (initial_label_render->w / 2));
+    int      label_y               = std::max(this->button_area.y, this->button_area.y + (this->button_area.h / 2) - (initial_label_render->h / 2));
+    int      label_width           = std::min(initial_label_render->w, this->button_area.w);
+    int      label_height          = std::min(initial_label_render->h, this->button_area.h);
+    SDL_Rect label_dest_pixel_area = {label_x, label_y, label_width, label_height};
+
+    // Calculate which pixels of the texture to copy into the label drawing area on screen.
+    int      horizontal_pixel_clip = std::max(initial_label_render->w - button_area.w, 0);
+    int      vertical_pixel_clip   = std::max(initial_label_render->h - button_area.h, 0);
+    SDL_Rect label_src_pixel_area  = {
+            horizontal_pixel_clip / 2,
+            vertical_pixel_clip / 2,
+            initial_label_render->w - horizontal_pixel_clip,
+            initial_label_render->h - vertical_pixel_clip
+    };
+
+    // Render the button label to the screen.
+    SDL_RenderCopy(MAIN_RENDERER, final_label_texture, &label_src_pixel_area, &label_dest_pixel_area);
+    SDL_DestroyTexture(final_label_texture);
 }
 
 bool Button::contains_point(int x, int y) const {
