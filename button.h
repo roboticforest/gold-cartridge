@@ -26,16 +26,16 @@ public:
      * @param pixel_width The width of the button, in pixels.
      * @param pixel_height The height of the button, in pixels.
      * @param text_label The label displayed on the button.
-     * @param button_action The function to be called when the button is clicked.
+     * @param action The function to be called when the button is clicked.
      */
-    Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label,
-           std::function<void()> button_action);
+    Button(int x_pixel_pos, int y_pixel_pos, int pixel_width, int pixel_height, std::string text_label, std::function<void()> action,
+           SDL_Color button_color, SDL_Color highlight_color);
 
     /**
      * Handles mouse events for the button.
      * @param event The SDL event to be handled.
      */
-    void handle_event(SDL_Event &event);
+    void handle_event(SDL_Event& event);
 
     /**
      * Draws the button on the screen.
@@ -49,16 +49,18 @@ private:
      * @param y The y-coordinate of the point, in pixels.
      * @return True if the point is within the button's area, false otherwise.
      */
-    [[nodiscard]] bool contains_point(int x, int y) const;
+    [[nodiscard]] bool button_contains_point(int x, int y) const;
 
     // Button Properties
     // =================
 
-    SDL_Rect              button_area;    // The area occupied by the button.
-    std::string           text_label;     // The label displayed on the button.
-    bool                  is_highlighted; // Whether the button is highlighted.
-    bool                  is_depressed;   // Whether the button is currently pressed.
-    std::function<void()> action;         // The function to be called when the button is clicked.
+    SDL_Color             button_color;           // The color of the button.
+    SDL_Color             button_highlight_color; // The color of the button when selected.
+    SDL_Rect              button_area;            // The area occupied by the button.
+    bool                  button_is_depressed;    // Whether the button is currently pressed.
+    bool                  button_is_highlighted;  // Whether the button is highlighted.
+    std::function<void()> button_action;          // The function to be called when the button is clicked.
+    std::string           button_label;           // The label displayed on the button.
 };
 
 #endif //GOLD_CARTRIDGE_BUTTON_H

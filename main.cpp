@@ -21,7 +21,9 @@ void input() {
             }
             case SDL_MOUSEMOTION:
             case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:test_button.handle_event(e);
+            case SDL_MOUSEBUTTONUP:
+                test_button.handle_event(e);
+                test_button_2.handle_event(e);
                 break;
         }
     }
@@ -51,6 +53,7 @@ void draw() {
     SDL_RenderCopy(MAIN_RENDERER, TEXT_RENDER_TEXTURE, nullptr, &TEXT_RENDER_LOCATION);
 
     test_button.draw();
+    test_button_2.draw();
 
     // Show the final rendering.
     SDL_RenderPresent(MAIN_RENDERER);

@@ -20,10 +20,9 @@ SDL_Color     CLEAR_COLOR = {0, 128, 0, 255};
 
 bool QUITTING = false;
 
-Button test_button(200, 250,
-                   140, 50,
-                   "Test Button!",
-                   []() -> void {
+SDL_Color white = {255,255,255,255};
+SDL_Color button_color = {128, 144, 136, 255};
+auto test_button_action = []() -> void {
     static bool green = false;
     if (!green) {
         CLEAR_COLOR = {0, 255, 0, 255};
@@ -33,7 +32,15 @@ Button test_button(200, 250,
         CLEAR_COLOR = {255, 204, 204, 255};
         green       = false;
     }
-});
+};
+Button test_button(200, 250, 140, 50,
+                   "Test Button!",
+                   test_button_action, button_color, white);
+
+Button test_button_2(400, 250, 140, 50,
+                     "Pink Button!",
+                     test_button_action,
+                     {255, 204, 204, 255}, white);
 
 // SDL Image Test Variables
 // =========================

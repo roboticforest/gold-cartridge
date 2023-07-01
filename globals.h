@@ -18,38 +18,39 @@
 // ====================================
 
 // Application Window
-extern SDL_Window * MAIN_WINDOW;
-extern const int    WINDOW_WIDTH;
-extern const int    WINDOW_HEIGHT;
+extern SDL_Window* MAIN_WINDOW;
+extern const int WINDOW_WIDTH;
+extern const int WINDOW_HEIGHT;
 
 // Drawing Context
-extern SDL_Renderer * MAIN_RENDERER;
-extern SDL_Color      CLEAR_COLOR;
+extern SDL_Renderer* MAIN_RENDERER;
+extern SDL_Color CLEAR_COLOR;
 
 // General Run Status
 extern bool QUITTING;
 
 // SDL2 Test Buttons
 extern Button test_button;
+extern Button test_button_2;
 
 // SDL Image Test Variables
 // =========================
 
 extern const std::string TEST_IMAGE_FILE_PATH;
-extern SDL_Texture *     TEST_IMAGE;
+extern SDL_Texture* TEST_IMAGE;
 
 // SDL TTF Test Variables
 // ======================
 
 // Font, Size, and Color.
-extern TTF_Font *        TEST_FONT;
+extern TTF_Font* TEST_FONT;
 extern const std::string TEST_FONT_FILE_PATH;
 extern const int         TEST_FONT_SIZE_PTS;
 extern SDL_Color         TEST_FONT_COLOR;
 
 // Word/Sentence Rendering
-extern std::string   TEST_SENTENCE;
-extern SDL_Texture * TEXT_RENDER_TEXTURE;
-extern SDL_Rect      TEXT_RENDER_LOCATION;
+extern std::string TEST_SENTENCE;
+extern SDL_Texture* TEXT_RENDER_TEXTURE;
+extern SDL_Rect TEXT_RENDER_LOCATION;
 
 #endif //GOLD_CARTRIDGE_GLOBALS_H
