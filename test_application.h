@@ -6,14 +6,20 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "test_application.h"
+#ifndef GOLD_CARTRIDGE_TEST_APPLICATION_H
+#define GOLD_CARTRIDGE_TEST_APPLICATION_H
 
-int main(int num_args, char** args) {
-    (void) num_args; // Ignored.
-    (void) args;     // Ignored.
+class TestApplication {
+  public:
+    TestApplication() = default;
+    ~TestApplication() = default;
 
-    TestApplication app;
-    app.run();
+    int run();
 
-    return 0;
-}
+  private:
+    void input();
+    void update();
+    void draw();
+};
+
+#endif //GOLD_CARTRIDGE_TEST_APPLICATION_H
