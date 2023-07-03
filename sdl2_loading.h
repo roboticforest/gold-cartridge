@@ -6,8 +6,8 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef GOLD_CARTRIDGE_SDL2_TESTING_H
-#define GOLD_CARTRIDGE_SDL2_TESTING_H
+#ifndef GOLD_CARTRIDGE_SDL2_LOADING_H
+#define GOLD_CARTRIDGE_SDL2_LOADING_H
 
 // SDL2 Core Library
 // =================
@@ -64,11 +64,11 @@ void prep_test_text_render();
 /**
  * Runs all test library initialization functions in their correct order.
  */
-void initialize_everything();
+void initialize_boilerplate();
 
 /**
  * Shuts down all libraries, and cleans up all dynamic resources, all in the correct order.
  */
 void shutdown();
 
-#endif //GOLD_CARTRIDGE_SDL2_TESTING_H
+#endif //GOLD_CARTRIDGE_SDL2_LOADING_H

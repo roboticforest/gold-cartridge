@@ -6,7 +6,7 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "sdl2_testing.h"
+#include "sdl2_loading.h"
 
 #include "globals.h"
 #include "test_asserts.h"
@@ -170,7 +170,7 @@ void prep_test_text_render() {
 /**
  * Initialize the entire application along with all SDL subsystems and extension libraries.
  */
-void initialize_everything() {
+void initialize_boilerplate() {
     prep_SDL2();
     prep_SDL_image();
     prep_SDL_ttf();
@@ -182,6 +182,7 @@ void initialize_everything() {
     load_test_font();
     prep_test_text_render();
 
+    BOILERPLATE_INITIALIZED = true;
     std::cout << "Initialization complete!" << std::endl;
 }
 
@@ -218,5 +219,6 @@ void shutdown() {
     std::cout << "Shutting down SDL2 and all subsystems..." << std::endl;
     SDL_Quit();
 
+    BOILERPLATE_INITIALIZED = false;
     std::cout << "Shut down complete!" << std::endl;
 }
