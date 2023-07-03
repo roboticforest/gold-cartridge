@@ -8,6 +8,8 @@
 
 #include "globals.h"
 
+#include "colors.h"
+
 // General Application & SDL2 Variables
 // ====================================
 
@@ -16,11 +18,11 @@ const int   WINDOW_WIDTH  = 1024;
 const int   WINDOW_HEIGHT = 768;
 
 SDL_Renderer* MAIN_RENDERER = nullptr;
-SDL_Color     CLEAR_COLOR = {0, 128, 0, 255};
+SDL_Color     CLEAR_COLOR = Color::black;
 
 bool QUITTING = false;
+bool BOILERPLATE_INITIALIZED = false;
 
-SDL_Color white = {255,255,255,255};
 SDL_Color button_color = {128, 144, 136, 255};
 auto test_button_action = []() -> void {
     static bool green = false;
@@ -35,12 +37,12 @@ auto test_button_action = []() -> void {
 };
 Button test_button(200, 250, 140, 50,
                    "Test Button!",
-                   test_button_action, button_color, white);
+                   test_button_action, button_color, Color::white);
 
 Button test_button_2(400, 250, 140, 50,
                      "Pink Button!",
                      test_button_action,
-                     {255, 204, 204, 255}, white);
+                     {255, 204, 204, 255}, Color::white);
 
 // SDL Image Test Variables
 // =========================

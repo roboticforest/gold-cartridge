@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 
-#include "sdl2_testing.h"
+#include "sdl2_loading.h"
 #include "globals.h"
 
 void TestApplication::input() {
@@ -23,8 +23,7 @@ void TestApplication::input() {
             }
             case SDL_MOUSEMOTION:
             case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-                test_button.handle_event(e);
+            case SDL_MOUSEBUTTONUP:test_button.handle_event(e);
                 test_button_2.handle_event(e);
                 break;
         }
@@ -63,7 +62,7 @@ void TestApplication::draw() {
 
 int TestApplication::run() {
 
-    initialize_everything();
+    if (!BOILERPLATE_INITIALIZED) { initialize_boilerplate(); }
 
     while (!QUITTING) {
         input();
