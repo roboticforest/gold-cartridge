@@ -52,11 +52,11 @@ void prep_SDL2() {
  */
 void prep_window() {
     auto create_window = []() {
-        MAIN_WINDOW = SDL_CreateWindow("Main Window",
+        Global::App::MAIN_WINDOW = SDL_CreateWindow("Main Window",
                                        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                       WINDOW_WIDTH, WINDOW_HEIGHT,
+                                       Global::App::WINDOW_WIDTH, Global::App::WINDOW_HEIGHT,
                                        SDL_WINDOW_SHOWN);
-        return MAIN_WINDOW != nullptr;
+        return Global::App::MAIN_WINDOW != nullptr;
     };
     assert_task(create_window,
                 "Creating main application window...",
@@ -68,8 +68,8 @@ void prep_window() {
  */
 void prep_renderer() {
     auto create_renderer = []() {
-        MAIN_RENDERER = SDL_CreateRenderer(MAIN_WINDOW, -1, SDL_RENDERER_ACCELERATED);
-        return MAIN_RENDERER != nullptr;
+        Global::App::MAIN_RENDERER = SDL_CreateRenderer(Global::App::MAIN_WINDOW, -1, SDL_RENDERER_ACCELERATED);
+        return Global::App::MAIN_RENDERER != nullptr;
     };
     assert_task(create_renderer,
                 "Creating primary rendering context...",
@@ -90,29 +90,29 @@ void prep_SDL_image() {
  * Use SDL_image to load a test graphic.
  */
 void load_test_graphic() {
-    SDL_Surface *png_img = IMG_Load(TEST_IMAGE_FILE_PATH.c_str());
+    SDL_Surface *png_img = IMG_Load(Global::TEST_IMAGE_FILE_PATH.c_str());
 
     if (!png_img) {
-        std::string error_msg = "The test image \"" + TEST_IMAGE_FILE_PATH + "\" could not be loaded.";
+        std::string error_msg = "The test image \"" + Global::TEST_IMAGE_FILE_PATH + "\" could not be loaded.";
         log_SDL2_error(error_msg);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Image Not Found",
-                                 "Test graphic could not be loaded! See log for more details.", MAIN_WINDOW);
+                                 "Test graphic could not be loaded! See log for more details.", Global::App::MAIN_WINDOW);
     } else {
-        TEST_IMAGE = SDL_CreateTextureFromSurface(MAIN_RENDERER, png_img);
+        Global::TEST_IMAGE = SDL_CreateTextureFromSurface(Global::App::MAIN_RENDERER, png_img);
     }
 
-    if (!TEST_IMAGE) {
+    if (!Global::TEST_IMAGE) {
         auto make_empty_texture = []() {
-            TEST_IMAGE = SDL_CreateTexture(MAIN_RENDERER, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, 64, 64);
-            return TEST_IMAGE != nullptr;
+            Global::TEST_IMAGE = SDL_CreateTexture(Global::App::MAIN_RENDERER, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, 64, 64);
+            return Global::TEST_IMAGE != nullptr;
         };
         assert_task(make_empty_texture, "Making a placeholder for the test image.",
                     "Unable to create generic empty textures. Aborting!");
         SDL_Rect square = {0, 0, 64, 64};
-        SDL_SetRenderTarget(MAIN_RENDERER, TEST_IMAGE);
-        SDL_SetRenderDrawColor(MAIN_RENDERER, 255, 0, 0, 255);
-        SDL_RenderFillRect(MAIN_RENDERER, &square);
-        SDL_SetRenderTarget(MAIN_RENDERER, nullptr);
+        SDL_SetRenderTarget(Global::App::MAIN_RENDERER, Global::TEST_IMAGE);
+        SDL_SetRenderDrawColor(Global::App::MAIN_RENDERER, 255, 0, 0, 255);
+        SDL_RenderFillRect(Global::App::MAIN_RENDERER, &square);
+        SDL_SetRenderTarget(Global::App::MAIN_RENDERER, nullptr);
     }
     SDL_FreeSurface(png_img);
 }
@@ -132,8 +132,8 @@ void prep_SDL_ttf() {
  */
 void load_test_font() {
     auto open_font = []() -> bool {
-        TEST_FONT = TTF_OpenFont(TEST_FONT_FILE_PATH.c_str(), TEST_FONT_SIZE_PTS);
-        return TEST_FONT != nullptr;
+        Global::TEST_FONT = TTF_OpenFont(Global::TEST_FONT_FILE_PATH.c_str(), Global::TEST_FONT_SIZE_PTS);
+        return Global::TEST_FONT != nullptr;
     };
     assert_task(open_font, "Loading test font...", "Test font failed to load! Aborting!");
 }
@@ -145,7 +145,7 @@ void prep_test_text_render() {
 
     SDL_Surface *text_render_surface = nullptr;
     auto render_text_to_surface = [&text_render_surface]() -> bool {
-        text_render_surface = TTF_RenderText_Blended(TEST_FONT, TEST_SENTENCE.c_str(), TEST_FONT_COLOR);
+        text_render_surface = TTF_RenderText_Blended(Global::TEST_FONT, Global::TEST_SENTENCE.c_str(), Global::TEST_FONT_COLOR);
         return text_render_surface != nullptr;
     };
     assert_task(render_text_to_surface,
@@ -153,15 +153,15 @@ void prep_test_text_render() {
                 "Rendering text failed. Aborting!");
 
     auto convert_text_surface_to_texture = [&text_render_surface]()->bool {
-        TEXT_RENDER_TEXTURE = SDL_CreateTextureFromSurface(MAIN_RENDERER, text_render_surface);
-        return TEXT_RENDER_TEXTURE != nullptr;
+        Global::TEXT_RENDER_TEXTURE = SDL_CreateTextureFromSurface(Global::App::MAIN_RENDERER, text_render_surface);
+        return Global::TEXT_RENDER_TEXTURE != nullptr;
     };
     assert_task(convert_text_surface_to_texture,
                 "Converting text render surface to a texture...",
                 "Conversion of text render surface to a texture failed. Aborting!");
 
-    TEXT_RENDER_LOCATION.w = text_render_surface->w;
-    TEXT_RENDER_LOCATION.h = text_render_surface->h;
+    Global::TEXT_RENDER_LOCATION.w = text_render_surface->w;
+    Global::TEXT_RENDER_LOCATION.h = text_render_surface->h;
 
     SDL_FreeSurface(text_render_surface);
     text_render_surface = nullptr;
@@ -182,7 +182,7 @@ void initialize_boilerplate() {
     load_test_font();
     prep_test_text_render();
 
-    BOILERPLATE_INITIALIZED = true;
+    Global::App::BOILERPLATE_INITIALIZED = true;
     std::cout << "Initialization complete!" << std::endl;
 }
 
@@ -193,23 +193,23 @@ void shutdown() {
     std::cout << "Shutting down the application..." << std::endl;
 
     std::cout << "Destroying the Test Image texture..." << std::endl;
-    SDL_DestroyTexture(TEST_IMAGE);
-    TEST_IMAGE = nullptr;
+    SDL_DestroyTexture(Global::TEST_IMAGE);
+    Global::TEST_IMAGE = nullptr;
 
     std::cout << "Cleaning up the test font resources..." << std::endl;
-    TTF_CloseFont(TEST_FONT);
-    TEST_FONT = nullptr;
+    TTF_CloseFont(Global::TEST_FONT);
+    Global::TEST_FONT = nullptr;
     std::cout << "Destroying the Text Rendering texture..." << std::endl;
-    SDL_DestroyTexture(TEXT_RENDER_TEXTURE);
-    TEXT_RENDER_TEXTURE = nullptr;
+    SDL_DestroyTexture(Global::TEXT_RENDER_TEXTURE);
+    Global::TEXT_RENDER_TEXTURE = nullptr;
 
     std::cout << "Destroying the Main Renderer..." << std::endl;
-    SDL_DestroyRenderer(MAIN_RENDERER);
-    MAIN_RENDERER = nullptr;
+    SDL_DestroyRenderer(Global::App::MAIN_RENDERER);
+    Global::App::MAIN_RENDERER = nullptr;
 
     std::cout << "Destroying the Main Application Window..." << std::endl;
-    SDL_DestroyWindow(MAIN_WINDOW);
-    MAIN_WINDOW = nullptr;
+    SDL_DestroyWindow(Global::App::MAIN_WINDOW);
+    Global::App::MAIN_WINDOW = nullptr;
 
     std::cout << "Shutting down SDL_image..." << std::endl;
     IMG_Quit();
@@ -219,6 +219,6 @@ void shutdown() {
     std::cout << "Shutting down SDL2 and all subsystems..." << std::endl;
     SDL_Quit();
 
-    BOILERPLATE_INITIALIZED = false;
+    Global::App::BOILERPLATE_INITIALIZED = false;
     std::cout << "Shut down complete!" << std::endl;
 }

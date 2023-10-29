@@ -9,9 +9,13 @@
 #ifndef GOLD_CARTRIDGE_TEST_APPLICATION_H
 #define GOLD_CARTRIDGE_TEST_APPLICATION_H
 
+#include "button.h"
+
+#include <memory>
+
 class TestApplication {
   public:
-    TestApplication() = default;
+    TestApplication();
     ~TestApplication() = default;
 
     int run();
@@ -20,6 +24,11 @@ class TestApplication {
     void input();
     void update();
     void draw();
+
+    // SDL2 Test Buttons
+    std::unique_ptr<Button> test_button;
+    std::unique_ptr<Button> test_button_2;
+    std::function<void()> button_action;
 };
 
 #endif //GOLD_CARTRIDGE_TEST_APPLICATION_H

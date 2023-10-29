@@ -11,47 +11,46 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <string>
 
-#include "button.h"
+namespace Global {
+    // General Application & SDL2 Variables
+    // ====================================
 
-// General Application & SDL2 Variables
-// ====================================
+    namespace App {
+        // Application Window
+        extern SDL_Window* MAIN_WINDOW;
+        extern const int   WINDOW_WIDTH;
+        extern const int   WINDOW_HEIGHT;
 
-// Application Window
-extern SDL_Window* MAIN_WINDOW;
-extern const int   WINDOW_WIDTH;
-extern const int   WINDOW_HEIGHT;
+        // Drawing Context
+        extern SDL_Renderer* MAIN_RENDERER;
+        extern SDL_Color     CLEAR_COLOR;
 
-// Drawing Context
-extern SDL_Renderer* MAIN_RENDERER;
-extern SDL_Color     CLEAR_COLOR;
+        // General Run Status
+        extern bool QUITTING;
+        extern bool BOILERPLATE_INITIALIZED;
+    }
 
-// General Run Status
-extern bool QUITTING;
-extern bool BOILERPLATE_INITIALIZED;
+    // SDL Image Test Variables
+    // =========================
 
-// SDL2 Test Buttons
-extern Button test_button;
-extern Button test_button_2;
+    extern const std::string TEST_IMAGE_FILE_PATH;
+    extern SDL_Texture*      TEST_IMAGE;
 
-// SDL Image Test Variables
-// =========================
+    // SDL TTF Test Variables
+    // ======================
 
-extern const std::string TEST_IMAGE_FILE_PATH;
-extern SDL_Texture*      TEST_IMAGE;
+    // Font, Size, and Color.
+    extern TTF_Font*         TEST_FONT;
+    extern const std::string TEST_FONT_FILE_PATH;
+    extern const int         TEST_FONT_SIZE_PTS;
+    extern SDL_Color         TEST_FONT_COLOR;
 
-// SDL TTF Test Variables
-// ======================
-
-// Font, Size, and Color.
-extern TTF_Font*         TEST_FONT;
-extern const std::string TEST_FONT_FILE_PATH;
-extern const int         TEST_FONT_SIZE_PTS;
-extern SDL_Color         TEST_FONT_COLOR;
-
-// Word/Sentence Rendering
-extern std::string  TEST_SENTENCE;
-extern SDL_Texture* TEXT_RENDER_TEXTURE;
-extern SDL_Rect     TEXT_RENDER_LOCATION;
+    // Word/Sentence Rendering
+    extern std::string  TEST_SENTENCE;
+    extern SDL_Texture* TEXT_RENDER_TEXTURE;
+    extern SDL_Rect     TEXT_RENDER_LOCATION;
+}
 
 #endif //GOLD_CARTRIDGE_GLOBALS_H

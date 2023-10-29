@@ -10,54 +10,38 @@
 
 #include "colors.h"
 
-// General Application & SDL2 Variables
-// ====================================
+namespace Global {
 
-SDL_Window* MAIN_WINDOW = nullptr;
-const int   WINDOW_WIDTH  = 1024;
-const int   WINDOW_HEIGHT = 768;
+    // General Application & SDL2 Variables
+    // ====================================
 
-SDL_Renderer* MAIN_RENDERER = nullptr;
-SDL_Color     CLEAR_COLOR = Color::black;
+    namespace App {
+        SDL_Window* MAIN_WINDOW = nullptr;
+        const int WINDOW_WIDTH  = 1024;
+        const int WINDOW_HEIGHT = 768;
 
-bool QUITTING = false;
-bool BOILERPLATE_INITIALIZED = false;
+        SDL_Renderer* MAIN_RENDERER = nullptr;
+        SDL_Color CLEAR_COLOR = Color::black;
 
-SDL_Color button_color = {128, 144, 136, 255};
-auto test_button_action = []() -> void {
-    static bool green = false;
-    if (!green) {
-        CLEAR_COLOR = {0, 255, 0, 255};
-        green       = true;
+        bool BOILERPLATE_INITIALIZED = false;
+        bool QUITTING                = false;
     }
-    else {
-        CLEAR_COLOR = {255, 204, 204, 255};
-        green       = false;
-    }
-};
-Button test_button(200, 250, 140, 50,
-                   "Test Button!",
-                   test_button_action, button_color, Color::white);
 
-Button test_button_2(400, 250, 140, 50,
-                     "Pink Button!",
-                     test_button_action,
-                     {255, 204, 204, 255}, Color::white);
+    // SDL Image Test Variables
+    // =========================
 
-// SDL Image Test Variables
-// =========================
+    const std::string TEST_IMAGE_FILE_PATH = "resources/pixel-art-ball.png";
+    SDL_Texture* TEST_IMAGE = nullptr;
 
-const std::string TEST_IMAGE_FILE_PATH = "resources/pixel-art-ball.png";
-SDL_Texture*      TEST_IMAGE = nullptr;
+    // SDL TTF Test Variables
+    // ======================
 
-// SDL TTF Test Variables
-// ======================
+    TTF_Font* TEST_FONT = nullptr;
+    const std::string TEST_FONT_FILE_PATH = "resources/playfair-display-font/PlayfairDisplayRegular-ywLOY.ttf";
+    const int         TEST_FONT_SIZE_PTS  = 14;
+    SDL_Color         TEST_FONT_COLOR     = {0, 0, 0, 255};
 
-TTF_Font*         TEST_FONT = nullptr;
-const std::string TEST_FONT_FILE_PATH = "resources/playfair-display-font/PlayfairDisplayRegular-ywLOY.ttf";
-const int         TEST_FONT_SIZE_PTS  = 14;
-SDL_Color         TEST_FONT_COLOR     = {0, 0, 0, 255};
-
-std::string  TEST_SENTENCE = "Cwm fjord bank glyphs vext quiz";
-SDL_Texture* TEXT_RENDER_TEXTURE = nullptr;
-SDL_Rect     TEXT_RENDER_LOCATION = {};
+    std::string TEST_SENTENCE = "Cwm fjord bank glyphs vext quiz";
+    SDL_Texture* TEXT_RENDER_TEXTURE = nullptr;
+    SDL_Rect TEXT_RENDER_LOCATION = {};
+}

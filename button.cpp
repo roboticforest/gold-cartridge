@@ -56,21 +56,21 @@ void Button::handle_event(SDL_Event& event) {
 void Button::draw() {
     // Fill the button area with color.
     if (button_is_highlighted) {
-        SDL_SetRenderDrawColor(MAIN_RENDERER, button_highlight_color.r, button_highlight_color.g, button_highlight_color.b, button_highlight_color.a);
+        SDL_SetRenderDrawColor(Global::App::MAIN_RENDERER, button_highlight_color.r, button_highlight_color.g, button_highlight_color.b, button_highlight_color.a);
     }
     else {
-        SDL_SetRenderDrawColor(MAIN_RENDERER, button_color.r, button_color.g, button_color.b, button_color.a);
+        SDL_SetRenderDrawColor(Global::App::MAIN_RENDERER, button_color.r, button_color.g, button_color.b, button_color.a);
     }
-    SDL_RenderFillRect(MAIN_RENDERER, &button_area);
+    SDL_RenderFillRect(Global::App::MAIN_RENDERER, &button_area);
 
     // Convert the label text into a displayable image, saving that to a texture for rendering to the screen.
-    SDL_Surface* initial_label_render = TTF_RenderText_Blended(TEST_FONT, button_label.c_str(), TEST_FONT_COLOR);
+    SDL_Surface* initial_label_render = TTF_RenderText_Blended(Global::TEST_FONT, button_label.c_str(), Global::TEST_FONT_COLOR);
     if (!initial_label_render) {
         log_error("Unable to render button label to a drawing surface.");
         return;
     }
 
-    SDL_Texture* final_label_texture = SDL_CreateTextureFromSurface(MAIN_RENDERER, initial_label_render);
+    SDL_Texture* final_label_texture = SDL_CreateTextureFromSurface(Global::App::MAIN_RENDERER, initial_label_render);
     SDL_FreeSurface(initial_label_render);
 
     if (!final_label_texture) {
@@ -96,7 +96,7 @@ void Button::draw() {
     };
 
     // Render the button label to the screen.
-    SDL_RenderCopy(MAIN_RENDERER, final_label_texture, &label_src_pixel_area, &label_dest_pixel_area);
+    SDL_RenderCopy(Global::App::MAIN_RENDERER, final_label_texture, &label_src_pixel_area, &label_dest_pixel_area);
     SDL_DestroyTexture(final_label_texture);
 }
 

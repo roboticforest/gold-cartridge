@@ -25,7 +25,7 @@ namespace USER {
             // ADD MORE CASES TO HANDLE USER INPUT AND OTHER SDL EVENTS.
             switch (e.type) {
                 case SDL_QUIT: {
-                    QUITTING = true;
+                    Global::App::QUITTING = true;
                     break;
                 }
             }
@@ -37,12 +37,16 @@ namespace USER {
     }
 
     void draw_scene() {
-        SDL_SetRenderDrawColor(MAIN_RENDERER, CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, CLEAR_COLOR.a);
-        SDL_RenderClear(MAIN_RENDERER);
+        SDL_SetRenderDrawColor(Global::App::MAIN_RENDERER,
+                               Global::App::CLEAR_COLOR.r,
+                               Global::App::CLEAR_COLOR.g,
+                               Global::App::CLEAR_COLOR.b,
+                               Global::App::CLEAR_COLOR.a);
+        SDL_RenderClear(Global::App::MAIN_RENDERER);
 
         // PUT YOUR DRAWING CODE HERE.
 
-        SDL_RenderPresent(MAIN_RENDERER);
+        SDL_RenderPresent(Global::App::MAIN_RENDERER);
     }
 }
 
@@ -56,7 +60,7 @@ int main(int num_args, char** args) {
     app.run();
 
     // PUT YOUR CODE INTO THESE FUNCTIONS.
-    while (!QUITTING) {
+    while (!Global::App::QUITTING) {
         USER::handle_input();
         USER::update_data();
         USER::draw_scene();
