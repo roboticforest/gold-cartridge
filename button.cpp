@@ -10,6 +10,8 @@
 
 #include <SDL_ttf.h>
 
+#include <iostream>
+
 #include "globals.h"
 #include "test_logging.h"
 
@@ -66,7 +68,7 @@ void Button::draw() {
     // Convert the label text into a displayable image, saving that to a texture for rendering to the screen.
     SDL_Surface* initial_label_render = TTF_RenderText_Blended(Global::TEST_FONT, button_label.c_str(), Global::TEST_FONT_COLOR);
     if (!initial_label_render) {
-        log_error("Unable to render button label to a drawing surface.");
+        std::cerr << "Unable to render button label to a drawing surface." << std::endl;
         return;
     }
 
@@ -74,7 +76,7 @@ void Button::draw() {
     SDL_FreeSurface(initial_label_render);
 
     if (!final_label_texture) {
-        log_error("Unable to convert button label drawing surface to a texture.");
+        std::cerr << "Unable to convert button label drawing surface to a texture." << std::endl;
         return;
     }
 

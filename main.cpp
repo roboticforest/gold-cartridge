@@ -6,7 +6,9 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <SDL.h> // Core SDL2 features.
+#include <SDL.h> // SDLCore SDL2 features.
+
+#include "core/SDL_System.h"
 
 #include "sdl2_loading.h" // Boilerplate functions.
 #include "globals.h"      // Boilerplate data.
@@ -53,6 +55,7 @@ namespace USER {
 int main(int num_args, char** args) {
     (void) num_args; // Ignored.
     (void) args;     // Ignored.
+    Core::SDL_System::instance().startup();
     initialize_boilerplate();
 
     // DELETE, OR COMMENT OUT, THIS CALL TO app.run() TO RUN YOUR CODE INSTEAD.

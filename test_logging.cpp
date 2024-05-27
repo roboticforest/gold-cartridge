@@ -27,15 +27,3 @@
     std::cout << "SDL_RENDERER_TARGETTEXTURE: " << ((renderer_details.flags & SDL_RENDERER_TARGETTEXTURE) > 0) << std::endl;
 }
 
-[[maybe_unused]] void log_status(const std::string& message) {
-    std::cout << message << std::endl;
-}
-
-[[maybe_unused]] void log_error(const std::string& message) {
-    std::cerr << message << std::endl;
-}
-
-[[maybe_unused]] void log_SDL2_error(const std::string& message) {
-    std::cerr << message << std::endl;
-    std::cerr << "SDL2 last reported: " << SDL_GetError() << std::endl;
-}
