@@ -25,12 +25,13 @@ if(WIN32)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
         message(STATUS "Release build on Windows. Hiding console.")
         # The following is more portable than setting -mwindows manually.
-        # "-mwindows" is passed to GCC/MinGW, and "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" is passed to MSVC.
+        # Setting the WIN32_EXECUTABLE property will make CMake automatically pass "-mwindows" to GCC/MinGW, and
+        # "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup" to MSVC.
         set_target_properties(gold_cartridge PROPERTIES WIN32_EXECUTABLE 1)
     endif()
 
     # To avoid errors when linking SDL2 on Windows the linker flags must be specified in this order:
-    # -lmingw32 -lSDL2main -lSDL2 -lotherSDL2libs
+    # -lmingw32 -lSDL2main -lSDL2 -lAnyOtherSDL2Libs
     if(MINGW)
         message(STATUS "Windows MinGW Build: Adding MinGW linker option.")
         target_link_libraries(gold_cartridge PUBLIC -lmingw32)
