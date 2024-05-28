@@ -27,15 +27,11 @@ void prep_SDL2() {
 }
 
 /**
- * Create the application's main window, terminating the application if one can not be made.
+ * Create the application's main _window, terminating the application if one can not be made.
  */
 void prep_window() {
 
-        Global::App::MAIN_WINDOW = SDL_CreateWindow("Main Window",
-                                                    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                                    Global::App::WINDOW_WIDTH, Global::App::WINDOW_HEIGHT,
-                                                    SDL_WINDOW_SHOWN);
-        assert(Global::App::MAIN_WINDOW != nullptr);
+
 
 }
 
@@ -44,8 +40,7 @@ void prep_window() {
  */
 void prep_renderer() {
 
-    Global::App::MAIN_RENDERER = SDL_CreateRenderer(Global::App::MAIN_WINDOW, -1, SDL_RENDERER_ACCELERATED);
-    assert(Global::App::MAIN_RENDERER != nullptr);
+
 
 }
 

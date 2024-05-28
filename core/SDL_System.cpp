@@ -18,6 +18,8 @@
 
 namespace Core {
 
+    // Helper logging functions.
+
     static void log_status(const std::string& message) {
         std::cout << message << std::endl;
     }
@@ -41,8 +43,13 @@ namespace Core {
         }
     }
 
+    // SDL_System functions.
+
+    bool Core::SDL_System::library_initialized = false;
+
     Core::SDL_System& Core::SDL_System::instance() {
         static SDL_System instance;
+        Core::SDL_System::library_initialized = true;
         return instance;
     }
 
@@ -96,6 +103,10 @@ namespace Core {
 
     Core::SDL_System::~SDL_System() {
         this->shutdown();
+    }
+
+    bool SDL_System::is_initialized() {
+        return Core::SDL_System::library_initialized;
     }
 
 } // Core namespace.

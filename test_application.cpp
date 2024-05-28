@@ -12,12 +12,12 @@
 
 #include "sdl2_loading.h"
 #include "globals.h"
-#include "colors.h"
+#include "rendering/Colors.h"
 
 /**
  * @brief A shorter, easier to use wrapper of SDL's official SetRenderDrawColor. Sets the color used for drawing
  * operations (Rect, Line and Clear).
- * @param renderer The renderer for which drawing color should be set.
+ * @param renderer The _renderer for which drawing color should be set.
  * @param draw_color The color used to draw on the rendering target.
  * @return 0 on success, or -1 on error.
  */
@@ -76,7 +76,7 @@ void TestApplication::draw() {
     SDL_RenderClear(Global::App::MAIN_RENDERER);
 
     // Texture rendering test.
-    // SDL_RenderCopy(MAIN_RENDERER, TEST_IMAGE, nullptr, nullptr); // Draws texture to fill drawing area.
+    // SDL_RenderCopy(_renderer, TEST_IMAGE, nullptr, nullptr); // Draws texture to fill drawing area.
     SDL_Rect texture_scaler = {0, 0, 55, 55}; // Draw texture at specified size and location.
     SDL_RenderCopy(Global::App::MAIN_RENDERER, Global::TEST_IMAGE, nullptr, &texture_scaler);
 

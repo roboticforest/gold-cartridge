@@ -23,8 +23,8 @@ public:
      * Constructs and configures a Button object.
      * @param x_pixel_pos The x-coordinate of the button's top-left corner, in pixels.
      * @param y_pixel_pos The y-coordinate of the button's top-left corner, in pixels.
-     * @param pixel_width The width of the button, in pixels.
-     * @param pixel_height The height of the button, in pixels.
+     * @param pixel_width The _windowWidth of the button, in pixels.
+     * @param pixel_height The _windowHeight of the button, in pixels.
      * @param text_label The label displayed on the button.
      * @param action The function to be called when the button is clicked.
      */

@@ -19,6 +19,7 @@ namespace Core {
          * @return The global SDL_System singleton.
          */
         static SDL_System& instance();
+        static bool is_initialized();
 
         // Prevent copying.
         SDL_System(const SDL_System&) = delete;
@@ -32,6 +33,8 @@ namespace Core {
         // Prevent manual instantiation.
         SDL_System();
         ~SDL_System();
+
+        static bool library_initialized;
     };
 
 } // Core

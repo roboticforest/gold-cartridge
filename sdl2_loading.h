@@ -18,12 +18,12 @@
 void prep_SDL2();
 
 /**
- * Creates the test application's main window.
+ * Creates the test application's main _window.
  */
 void prep_window();
 
 /**
- * Creates a drawing area/context for the main window.
+ * Creates a drawing area/context for the main _window.
  */
 void prep_renderer();
 

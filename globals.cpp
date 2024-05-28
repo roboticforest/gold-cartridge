@@ -8,7 +8,7 @@
 
 #include "globals.h"
 
-#include "colors.h"
+#include "rendering/Colors.h"
 
 namespace Global {
 

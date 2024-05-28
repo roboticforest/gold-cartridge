@@ -18,18 +18,7 @@ namespace Global {
     // ====================================
 
     namespace App {
-        // Application Window
-        extern SDL_Window* MAIN_WINDOW;
-        extern const int   WINDOW_WIDTH;
-        extern const int   WINDOW_HEIGHT;
 
-        // Drawing Context
-        extern SDL_Renderer* MAIN_RENDERER;
-        extern SDL_Color     CLEAR_COLOR;
-
-        // General Run Status
-        extern bool QUITTING;
-        extern bool BOILERPLATE_INITIALIZED;
     }
 
     // SDL Image Test Variables

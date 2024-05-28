@@ -14,8 +14,8 @@
 #include <string>
 
 /**
- * Dumps information about the given renderer to the console for debugging purposes.
- * @param renderer The renderer to extract properties from.
+ * Dumps information about the given _renderer to the console for debugging purposes.
+ * @param renderer The _renderer to extract properties from.
  * @param renderer_name A short meaningful label for the render. For example: "Main Renderer" or "Texture Render".
  */
 [[maybe_unused]] void dump_render_info(SDL_Renderer* renderer, const std::string& renderer_name);

@@ -9,7 +9,7 @@
 #ifndef GOLD_CARTRIDGE_COLORS_H
 #define GOLD_CARTRIDGE_COLORS_H
 
-#include <SDL.h>
+#include <SDL_pixels.h>
 
 /**
  * @brief A collection of all 148 standard web colors.

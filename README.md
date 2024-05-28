@@ -10,7 +10,7 @@ The aim of this project is to provide a simplified starting point for developers
 
 - Initializes SDL2, SDL2\_image, and SDL2\_ttf.
 - Cross-platform support (Linux, Windows).
-- Provides a default window, renderer, and font.
+- Provides a default _window, _renderer, and font.
 
 ### Quick Start
 
@@ -35,7 +35,7 @@ If you wish to do something more complex you are free to ignore any of the provi
 
 - `sdl2_loading.h` -- Handles SDL2 start-up and shutdown.
 
-- `globals.h` -- **Semi-Optional** -- Holds variables for the default window, renderer, and font, plus other data for internal testing and debugging.
+- `globals.h` -- **Semi-Optional** -- Holds variables for the default _window, _renderer, and font, plus other data for internal testing and debugging.
 
   Edit or ignore this file if you plan on doing something non-trivial with how SDL2 is initialized.
 
