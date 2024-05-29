@@ -40,8 +40,13 @@ namespace Rendering {
         assert(_renderer != nullptr);
         _windowOpen = true;
     }
+
     Window::Window() : Window(defaultWindowWidth, defaultWindowHeight, defaultWindowTitle) {}
-    Window::~Window() = default;
+
+    Window::~Window() {
+        if (_renderer) { SDL_DestroyRenderer(_renderer); }
+        if (_window) { SDL_DestroyWindow(_window); }
+    }
 
     void Window::set_update_callback(Callback update_fn) {
         _do_user_update = std::move(update_fn);
