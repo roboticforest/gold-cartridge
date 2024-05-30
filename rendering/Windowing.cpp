@@ -58,8 +58,9 @@ namespace Rendering {
 
     void Window::update() {
         // Give users the first shot at consuming events.
-        if (_do_user_update)
+        if (_do_user_update) {
             _do_user_update();
+        }
 
         // Process all remaining events. This *must* be done somewhere (filters or not) or the window freezes.
         SDL_Event currentEvent;
@@ -74,8 +75,9 @@ namespace Rendering {
                                defaultClearColor.a);
         SDL_RenderClear(_renderer);
 
-        if (_do_user_rendering)
+        if (_do_user_rendering) {
             _do_user_rendering();
+        }
 
         SDL_RenderPresent(_renderer);
     }
