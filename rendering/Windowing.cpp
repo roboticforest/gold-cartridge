@@ -54,9 +54,9 @@ namespace Rendering {
 
     // Public API functions and helpers.
 
-    void Window::set_update_callback(Callback update_fn) { _process_user_updates = std::move(update_fn); }
+    void Window::set_user_update_callback(Callback update_fn) { _process_user_updates = std::move(update_fn); }
 
-    void Window::set_draw_callback(Callback draw_fn) { _process_user_rendering = std::move(draw_fn); }
+    void Window::set_user_draw_callback(Callback draw_fn) { _process_user_rendering = std::move(draw_fn); }
 
     static void start_watch_for_window_close(Rendering::Window* window) {
         // NOTE: Multiple open windows are not supported by this code. SDL2

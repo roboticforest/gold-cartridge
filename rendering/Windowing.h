@@ -25,8 +25,8 @@ namespace Rendering {
         Window(int windowWidth, int windowHeight, std::string windowTitle);
         ~Window();
 
-        void set_update_callback(Callback update_fn);
-        void set_draw_callback(Callback draw_fn);
+        void set_user_update_callback(Callback update_fn);
+        void set_user_draw_callback(Callback draw_fn);
         void run();
         void close();
 

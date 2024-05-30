@@ -15,12 +15,12 @@ int main(int num_args, char** args) {
     Core::SDL_System::instance().startup();
 
     Rendering::Window mainWindow;
-    mainWindow.set_update_callback([]() {
-        // User update code here...
+    mainWindow.set_user_update_callback([]() {
+        // Your update code here...
     });
 
-    mainWindow.set_draw_callback([]() {
-        // User drawing code here...
+    mainWindow.set_user_draw_callback([]() {
+        // Your graphics rendering code here...
     });
 
     mainWindow.run();
