@@ -22,7 +22,7 @@ namespace Rendering {
     static const int         defaultWindowWidth  = 1024;
     static const int         defaultWindowHeight = 768;
     static const std::string defaultWindowTitle  = "Gold Cartridge";
-    static const SDL_Color   defaultClearColor   = Color::black;
+    static const SDL_Color   defaultClearColor   = Color::black();
 
     // Window constructors and destructors.
 
