@@ -41,8 +41,8 @@ namespace Rendering {
         int         _windowHeight;
         std::string _windowTitle;
 
-        Callback _do_user_update;
-        Callback _do_user_rendering;
+        Callback _process_user_updates;
+        Callback _process_user_rendering;
         bool     _windowOpen;
     };
 
