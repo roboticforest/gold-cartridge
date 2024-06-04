@@ -7,9 +7,6 @@
 # External Libraries
 lib/*
 
-# Generated Documentation Files
-doc/*
-
 # Generated Files
 ProjectVersion
 *.md.backup
