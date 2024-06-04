@@ -15,7 +15,7 @@ set(SOURCE_FILES main.cpp
         rendering/Windowing.h
         rendering/Colors.h)
 
-# button.cpp test_logging.cpp test_asserts.cpp sdl2_loading.cpp globals.cpp test_application.cpp test_application.h colors.cpp colors.h
+# button.cpp test_logging.cpp test_asserts.cpp sdl2_loading.cpp globals.cpp test_application.cpp test_application.h
 
 add_executable(gold_cartridge ${SOURCE_FILES})
 

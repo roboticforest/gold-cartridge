@@ -1,9 +1,17 @@
 /**
+ * @file Colors.h
+ * @brief A collection of all 148 standard web colors.
+ *
+ * For more information visit
+ * [W3Schools](https://www.w3schools.com/colors/colors_names.asp)
+ * or search online for "web colors".
+ *
  * @author David Vitez (AKA: Robotic Forest)
  * @copyright All rights reserved © 2023 David Vitez
- * @license This Source Code Form is subject to the terms of the Mozilla Public
- *          License, v. 2.0. If a copy of the MPL was not distributed with this
- *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * @par License:
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 #ifndef GOLD_CARTRIDGE_COLORS_H
@@ -11,13 +19,6 @@
 
 #include <SDL_pixels.h>
 
-/**
- * @brief A collection of all 148 standard web colors.
- *
- * For more information visit \n
- * https://www.w3schools.com/colors/colors_names.asp \n
- * or search online for "web colors".
- */
 namespace Color {
 
     inline SDL_Color aliceBlue()            { return SDL_Color {240, 248, 255, 255}; }
