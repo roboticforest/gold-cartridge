@@ -21,6 +21,13 @@
 
 namespace Color {
 
+    /**
+    * @brief Gets color values of the given name.
+    *
+    * This function returns an SDL_Color struct initialized with the RGBA values
+    * corresponding to the specified web color name.
+    */
+    ///@{
     [[maybe_unused]] inline SDL_Color aliceBlue()            { return SDL_Color {240, 248, 255, 255}; }
     [[maybe_unused]] inline SDL_Color antiqueWhite()         { return SDL_Color {250, 235, 215, 255}; }
     [[maybe_unused]] inline SDL_Color aqua()                 { return SDL_Color {0, 255, 255, 255}; }
@@ -169,6 +176,7 @@ namespace Color {
     [[maybe_unused]] inline SDL_Color whiteSmoke()           { return SDL_Color {245, 245, 245, 255}; }
     [[maybe_unused]] inline SDL_Color yellow()               { return SDL_Color {255, 255, 0, 255}; }
     [[maybe_unused]] inline SDL_Color yellowGreen()          { return SDL_Color {154, 205, 50, 255}; }
+    ///@}
 
 } // Color
 
