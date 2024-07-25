@@ -36,6 +36,9 @@ namespace Rendering {
         double update_interval_ms() const;
         void update_interval_ms(double new_ms_interval);
 
+        int width();
+        int height();
+
         void run();
         void close();
 

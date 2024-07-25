@@ -85,6 +85,9 @@ namespace Rendering {
         SDL_AddEventWatch(quitEventFilter, window);
     }
 
+    int Window::width() { return _windowWidth; }
+    int Window::height() { return _windowHeight; }
+
     void Window::run() {
 
         start_watching_for_window_close(this);
@@ -140,5 +143,6 @@ namespace Rendering {
 
         SDL_RenderPresent(_renderer);
     }
+
 
 } // Rendering namespace
