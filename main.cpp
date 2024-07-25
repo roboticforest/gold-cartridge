@@ -8,18 +8,19 @@
 
 #include "core/SDL_System.h"
 #include "rendering/Windowing.h"
+#include <SDL.h>
 
 int main(int num_args, char** args) {
     (void)num_args; // Ignored.
     (void)args;     // Ignored.
     Core::SDL_System::instance().startup();
-
     Rendering::Window mainWindow;
+
     mainWindow.set_user_update_callback([]() {
         // Your update code here...
     });
 
-    mainWindow.set_user_draw_callback([]() {
+    mainWindow.set_user_draw_callback([](SDL_Renderer* renderer) {
         // Your graphics rendering code here...
     });
 
