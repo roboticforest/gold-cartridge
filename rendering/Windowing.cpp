@@ -11,6 +11,7 @@
 #include "Colors.h"
 
 #include <cassert>
+#include <chrono>
 #include <SDL_video.h>
 #include <SDL_render.h>
 #include <SDL_events.h>
@@ -27,7 +28,8 @@ namespace Rendering {
     // Window constructors and destructors.
 
     Window::Window(int windowWidth, int windowHeight, std::string windowTitle)
-            : _windowWidth(windowWidth), _windowHeight(windowHeight), _windowTitle(std::move(windowTitle)) {
+            : _windowWidth(windowWidth), _windowHeight(windowHeight), _windowTitle(std::move(windowTitle)),
+              _update_interval_ms(1000.0 / 60.0), _max_updates_per_frame(4) {
 
         assert(Core::SDL_System::is_initialized());
         _window = SDL_CreateWindow(_windowTitle.c_str(),
@@ -39,7 +41,8 @@ namespace Rendering {
 
         assert(_window != nullptr);
         const int firstValidDriver = -1;
-        _renderer = SDL_CreateRenderer(_window, firstValidDriver, SDL_RENDERER_ACCELERATED);
+        _renderer = SDL_CreateRenderer(_window, firstValidDriver, SDL_RENDERER_ACCELERATED /*|
+        SDL_RENDERER_PRESENTVSYNC*/);
 
         assert(_renderer != nullptr);
         _windowOpen = true;
@@ -54,11 +57,19 @@ namespace Rendering {
 
     // Public API functions and helpers.
 
-    void Window::set_user_update_callback(Callback update_fn) { _process_user_updates = std::move(update_fn); }
+    void Window::set_user_update_callback(UpdateCallback update_fn) { _process_user_updates = std::move(update_fn); }
+    void Window::set_user_draw_callback(DrawCallback draw_fn) { _process_user_rendering = std::move(draw_fn); }
 
-    void Window::set_user_draw_callback(Callback draw_fn) { _process_user_rendering = std::move(draw_fn); }
+    int Window::max_updates_per_frame() const { return _max_updates_per_frame; }
+    void Window::max_updates_per_frame(int new_update_limit) {
+        if (new_update_limit <= 0) { _max_updates_per_frame = 1; }
+        else { _max_updates_per_frame = new_update_limit; }
+    }
 
-    static void start_watch_for_window_close(Rendering::Window* window) {
+    double Window::update_interval_ms() const { return _update_interval_ms.count(); }
+    void Window::update_interval_ms(double new_ms_interval) { _update_interval_ms = Milliseconds(new_ms_interval); }
+
+    static void start_watching_for_window_close(Rendering::Window* window) {
         // NOTE: Multiple open windows are not supported by this code. SDL2
         // generates SDL_QUIT events when "the last" (or only) window is closed
         // vs when multiple windows are open, and that's not accounted for here
@@ -76,9 +87,27 @@ namespace Rendering {
 
     void Window::run() {
 
-        start_watch_for_window_close(this);
+        start_watching_for_window_close(this);
+
+        using Clock = std::chrono::high_resolution_clock;
+        using TimeStamp = std::chrono::time_point<Clock>;
+
+        Milliseconds lag_time(0.0);
+        TimeStamp    previous_time = Clock::now();
+
         while (_windowOpen) {
-            this->update();
+            TimeStamp    current_time = Clock::now();
+            Milliseconds elapsed_time = current_time - previous_time;
+            previous_time = current_time;
+            lag_time += elapsed_time;
+
+            int update_count = 0;
+            while (lag_time >= _update_interval_ms && update_count < _max_updates_per_frame) {
+                this->update();
+                lag_time -= _update_interval_ms;
+                update_count++;
+            }
+
             this->render();
         }
     }
@@ -107,7 +136,7 @@ namespace Rendering {
                                defaultClearColor.a);
         SDL_RenderClear(_renderer);
 
-        if (_process_user_rendering) { _process_user_rendering(); }
+        if (_process_user_rendering) { _process_user_rendering(_renderer); }
 
         SDL_RenderPresent(_renderer);
     }
