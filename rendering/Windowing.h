@@ -9,9 +9,10 @@
 #ifndef GOLD_CARTRIDGE_WINDOWING_H
 #define GOLD_CARTRIDGE_WINDOWING_H
 
-#include <functional>
-#include <string>
 #include <chrono>
+#include <functional>
+#include <memory>
+#include <string>
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -21,11 +22,13 @@ namespace Rendering {
     using UpdateCallback = std::function<void()>;
     using DrawCallback = std::function<void(SDL_Renderer* renderer)>;
     using Milliseconds = std::chrono::duration<double, std::milli>;
+    using SDL_WindowPtr = std::unique_ptr<SDL_Window, void (*)(SDL_Window*)>;
+    using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)>;
 
     class Window {
     public:
         Window();
-        Window(int windowWidth, int windowHeight, std::string windowTitle);
+        Window(int window_width, int window_height, std::string window_title);
         ~Window();
 
         void set_user_update_callback(UpdateCallback update_fn);
@@ -36,8 +39,8 @@ namespace Rendering {
         double update_interval_ms() const;
         void update_interval_ms(double new_ms_interval);
 
-        int width();
-        int height();
+        int width() const;
+        int height() const;
 
         void run();
         void close();
@@ -47,17 +50,17 @@ namespace Rendering {
         void render();
 
     private:
-        SDL_Renderer* _renderer;
-        SDL_Window  * _window;
-        int         _windowWidth;
-        int         _windowHeight;
-        std::string _windowTitle;
-        bool        _windowOpen;
+        SDL_RendererPtr m_renderer;
+        SDL_WindowPtr   m_window;
+        int             m_window_width;
+        int             m_window_height;
+        std::string     m_window_title;
+        bool            m_window_is_open;
 
-        int            _max_updates_per_frame;
-        Milliseconds   _update_interval_ms;
-        UpdateCallback _process_user_updates;
-        DrawCallback   _process_user_rendering;
+        int            m_max_updates_per_frame;
+        Milliseconds   m_update_interval_ms;
+        UpdateCallback m_process_user_updates;
+        DrawCallback   m_process_user_rendering;
     };
 
 } // Rendering namespace

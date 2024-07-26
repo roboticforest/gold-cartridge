@@ -12,64 +12,84 @@
 
 #include <cassert>
 #include <chrono>
-#include <SDL_video.h>
-#include <SDL_render.h>
 #include <SDL_events.h>
+#include <SDL_render.h>
+#include <SDL_video.h>
 
 namespace Rendering {
 
-    // Reasonable window display defaults.
+////////////////////////////////////////////////////////////////////////////////
+/// Reasonable window display defaults.
+////////////////////////////////////////////////////////////////////////////////
 
-    static const int         defaultWindowWidth  = 1024;
-    static const int         defaultWindowHeight = 768;
-    static const std::string defaultWindowTitle  = "Gold Cartridge";
-    static const SDL_Color   defaultClearColor   = Color::black();
+    static const int         DEFAULT_WINDOW_WIDTH          = 1024;
+    static const int         DEFAULT_WINDOW_HEIGHT         = 768;
+    static const std::string DEFAULT_WINDOW_TITLE          = "Gold Cartridge";
+    static const SDL_Color   DEFAULT_CLEAR_COLOR           = Color::black();
+    static const double      DEFAULT_UPDATE_INTERVAL       = 1000.00 / 60.0;
+    static const int         DEFAULT_MAX_UPDATES_PER_FRAME = 4;
 
-    // Window constructors and destructors.
+////////////////////////////////////////////////////////////////////////////////
+/// Window constructors and destructors.
+////////////////////////////////////////////////////////////////////////////////
 
-    Window::Window(int windowWidth, int windowHeight, std::string windowTitle)
-            : _windowWidth(windowWidth), _windowHeight(windowHeight), _windowTitle(std::move(windowTitle)),
-              _update_interval_ms(1000.0 / 60.0), _max_updates_per_frame(4) {
+    Window::Window(int window_width, int window_height, std::string window_title)
+            : m_window_width(window_width),
+              m_window_height(window_height),
+              m_window_title(std::move(window_title)),
+              m_update_interval_ms(DEFAULT_UPDATE_INTERVAL),
+              m_max_updates_per_frame(DEFAULT_MAX_UPDATES_PER_FRAME),
+              m_window(nullptr, SDL_DestroyWindow),
+              m_renderer(nullptr, SDL_DestroyRenderer) {
 
         assert(Core::SDL_System::is_initialized());
-        _window = SDL_CreateWindow(_windowTitle.c_str(),
-                                   SDL_WINDOWPOS_CENTERED,
-                                   SDL_WINDOWPOS_CENTERED,
-                                   _windowWidth,
-                                   _windowHeight,
-                                   SDL_WINDOW_SHOWN);
+        m_window.reset(SDL_CreateWindow(m_window_title.c_str(),
+                                        SDL_WINDOWPOS_CENTERED,
+                                        SDL_WINDOWPOS_CENTERED,
+                                        m_window_width,
+                                        m_window_height,
+                                        SDL_WINDOW_SHOWN));
+        assert(m_window);
 
-        assert(_window != nullptr);
-        const int firstValidDriver = -1;
-        _renderer = SDL_CreateRenderer(_window, firstValidDriver, SDL_RENDERER_ACCELERATED /*|
-        SDL_RENDERER_PRESENTVSYNC*/);
+        constexpr int first_valid_driver = -1;
+        m_renderer.reset(SDL_CreateRenderer(m_window.get(),
+                                            first_valid_driver,
+                                            SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/));
+        assert(m_renderer);
 
-        assert(_renderer != nullptr);
-        _windowOpen = true;
+        m_window_is_open = true;
     }
 
-    Window::Window() : Window(defaultWindowWidth, defaultWindowHeight, defaultWindowTitle) {}
+    Window::Window() : Window(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_TITLE) {}
 
     Window::~Window() {
-        if (_renderer) { SDL_DestroyRenderer(_renderer); }
-        if (_window) { SDL_DestroyWindow(_window); }
+        m_renderer.reset();
+        m_window.reset();
     }
 
-    // Public API functions and helpers.
+////////////////////////////////////////////////////////////////////////////////
+/// Public API functions and helpers.
+////////////////////////////////////////////////////////////////////////////////
 
-    void Window::set_user_update_callback(UpdateCallback update_fn) { _process_user_updates = std::move(update_fn); }
-    void Window::set_user_draw_callback(DrawCallback draw_fn) { _process_user_rendering = std::move(draw_fn); }
+    void Window::set_user_update_callback(UpdateCallback update_fn) { m_process_user_updates = std::move(update_fn); }
+    void Window::set_user_draw_callback(DrawCallback draw_fn) { m_process_user_rendering = std::move(draw_fn); }
 
-    int Window::max_updates_per_frame() const { return _max_updates_per_frame; }
-    void Window::max_updates_per_frame(int new_update_limit) {
-        if (new_update_limit <= 0) { _max_updates_per_frame = 1; }
-        else { _max_updates_per_frame = new_update_limit; }
+    [[maybe_unused]] int Window::max_updates_per_frame() const { return m_max_updates_per_frame; }
+    [[maybe_unused]] void Window::max_updates_per_frame(int new_update_limit) {
+        if (new_update_limit <= 0) { m_max_updates_per_frame = 1; }
+        else { m_max_updates_per_frame = new_update_limit; }
     }
 
-    double Window::update_interval_ms() const { return _update_interval_ms.count(); }
-    void Window::update_interval_ms(double new_ms_interval) { _update_interval_ms = Milliseconds(new_ms_interval); }
+    [[maybe_unused]] double Window::update_interval_ms() const { return m_update_interval_ms.count(); }
+    [[maybe_unused]] void Window::update_interval_ms(double new_ms_interval) {
+        m_update_interval_ms = Milliseconds(new_ms_interval);
+    }
 
-    static void start_watching_for_window_close(Rendering::Window* window) {
+    [[maybe_unused]] int Window::width() const { return m_window_width; }
+    [[maybe_unused]] int Window::height() const { return m_window_height; }
+
+    /// Helper function for Window::run()
+    static void START_WATCHING_FOR_WINDOW_CLOSE(Rendering::Window* window) {
         // NOTE: Multiple open windows are not supported by this code. SDL2
         // generates SDL_QUIT events when "the last" (or only) window is closed
         // vs when multiple windows are open, and that's not accounted for here
@@ -78,19 +98,16 @@ namespace Rendering {
         // NOTE: An event filter allows us to handle quit events both before
         // framework users and without interfering with their event handling
         // code.
-        auto quitEventFilter = [](void* window, SDL_Event* event) -> int {
+        auto quit_event_filter = [](void* window, SDL_Event* event) -> int {
             if (event->type == SDL_QUIT) { static_cast<Rendering::Window*>(window)->close(); }
             return 0; // Value will be ignored by SDL2.
         };
-        SDL_AddEventWatch(quitEventFilter, window);
+        SDL_AddEventWatch(quit_event_filter, window);
     }
-
-    int Window::width() { return _windowWidth; }
-    int Window::height() { return _windowHeight; }
 
     void Window::run() {
 
-        start_watching_for_window_close(this);
+        START_WATCHING_FOR_WINDOW_CLOSE(this);
 
         using Clock = std::chrono::high_resolution_clock;
         using TimeStamp = std::chrono::time_point<Clock>;
@@ -98,16 +115,16 @@ namespace Rendering {
         Milliseconds lag_time(0.0);
         TimeStamp    previous_time = Clock::now();
 
-        while (_windowOpen) {
+        while (m_window_is_open) {
             TimeStamp    current_time = Clock::now();
             Milliseconds elapsed_time = current_time - previous_time;
             previous_time = current_time;
             lag_time += elapsed_time;
 
             int update_count = 0;
-            while (lag_time >= _update_interval_ms && update_count < _max_updates_per_frame) {
+            while (lag_time >= m_update_interval_ms && update_count < m_max_updates_per_frame) {
                 this->update();
-                lag_time -= _update_interval_ms;
+                lag_time -= m_update_interval_ms;
                 update_count++;
             }
 
@@ -115,13 +132,15 @@ namespace Rendering {
         }
     }
 
-    void Window::close() { _windowOpen = false; }
+    void Window::close() { m_window_is_open = false; }
 
-    // Private API functions and helpers.
+////////////////////////////////////////////////////////////////////////////////
+/// Private API functions and helpers.
+////////////////////////////////////////////////////////////////////////////////
 
     void Window::update() {
         // Give users the first shot at consuming events.
-        if (_process_user_updates) { _process_user_updates(); }
+        if (m_process_user_updates) { m_process_user_updates(); }
 
         // Processing SDL2's event queue *MUST* be done somewhere or the
         // window freezes, even if the events are just thrown away. SDL event
@@ -132,16 +151,16 @@ namespace Rendering {
     }
 
     void Window::render() {
-        SDL_SetRenderDrawColor(_renderer,
-                               defaultClearColor.r,
-                               defaultClearColor.g,
-                               defaultClearColor.b,
-                               defaultClearColor.a);
-        SDL_RenderClear(_renderer);
+        SDL_SetRenderDrawColor(m_renderer.get(),
+                               DEFAULT_CLEAR_COLOR.r,
+                               DEFAULT_CLEAR_COLOR.g,
+                               DEFAULT_CLEAR_COLOR.b,
+                               DEFAULT_CLEAR_COLOR.a);
+        SDL_RenderClear(m_renderer.get());
 
-        if (_process_user_rendering) { _process_user_rendering(_renderer); }
+        if (m_process_user_rendering) { m_process_user_rendering(m_renderer.get()); }
 
-        SDL_RenderPresent(_renderer);
+        SDL_RenderPresent(m_renderer.get());
     }
 
 
