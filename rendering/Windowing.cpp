@@ -7,7 +7,7 @@
  */
 
 #include "Windowing.h"
-#include "../core/SDL_System.h"
+#include "../core/System.h"
 #include "Colors.h"
 
 #include <cassert>
@@ -42,7 +42,7 @@ namespace Rendering {
               m_window(nullptr, SDL_DestroyWindow),
               m_renderer(nullptr, SDL_DestroyRenderer) {
 
-        assert(Core::SDL_System::is_initialized());
+        assert(Core::System::is_initialized());
         m_window.reset(SDL_CreateWindow(m_window_title.c_str(),
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,

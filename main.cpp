@@ -6,14 +6,15 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "core/SDL_System.h"
+#include "core/System.h"
 #include "rendering/Windowing.h"
+#include "ui/Button.h"
 #include <SDL.h>
 
 int main(int num_args, char** args) {
     (void)num_args; // Ignored.
     (void)args;     // Ignored.
-    Core::SDL_System::start_up();
+    Core::System::start_up();
     Rendering::Window main_window;
 
     main_window.set_user_update_callback([]() {

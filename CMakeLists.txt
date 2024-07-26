@@ -9,11 +9,15 @@ project(gold_cartridge)
 
 set(CMAKE_CXX_STANDARD 20)
 set(SOURCE_FILES main.cpp
-        core/SDL_System.cpp
-        core/SDL_System.h
+        core/System.cpp
+        core/System.h
         rendering/Windowing.cpp
         rendering/Windowing.h
-        rendering/Colors.h)
+        rendering/Colors.h
+        ui/Button.cpp
+        ui/Button.h
+        core/FontManager.cpp
+        core/FontManager.h)
 
 # button.cpp test_logging.cpp test_asserts.cpp sdl2_loading.cpp globals.cpp test_application.cpp test_application.h
 

@@ -6,7 +6,7 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "SDL_System.h"
+#include "System.h"
 
 #include <functional>
 #include <iostream>
@@ -16,6 +16,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+
+#include "FontManager.h"
 
 namespace Core {
 
@@ -46,18 +48,25 @@ namespace Core {
         }
     }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Public API SDL_System functions.
-////////////////////////////////////////////////////////////////////////////////
-
-    bool SDL_System::m_library_initialized = false;
-    bool SDL_System::is_initialized() {
-        return m_library_initialized;
+    static void LOG_TASK(const std::function<bool()>& task,
+                         const std::optional<std::string>& start_message,
+                         const std::optional<std::string>& failure_message) {
+        if (start_message) { LOG_STATUS(*start_message); }
+        if (!task() && failure_message) { LOG_ERROR(*failure_message); }
     }
 
-    bool SDL_System::start_up() {
+////////////////////////////////////////////////////////////////////////////////
+/// Public API for Core::System functions.
+////////////////////////////////////////////////////////////////////////////////
 
-        static SDL_System instance;
+    bool System::m_core_system_initialized = false;
+    bool System::is_initialized() {
+        return m_core_system_initialized;
+    }
+
+    bool System::start_up() {
+
+        static System instance;
 
         if (!is_initialized()) {
             // Initialize all core SDL subsystems.
@@ -86,39 +95,47 @@ namespace Core {
                         "Timers failed to initialize!");
 
             // Initialize SDL_image optional subsystem.
-            ASSERT_TASK([]() { return ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)); },
-                        "Configuring SDL_image for PNG file loading...",
-                        "PNG file loader could not be initialized!"
-            );
+            LOG_TASK([]() { return ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)); },
+                     "Starting SDL_image, and configuring for PNG file loading...",
+                     "PNG file loader could not be initialized! Continuing with only basic SDL2 image file support");
 
             // Initialize SDL_ttf optional subsystem.
-            ASSERT_TASK([]() { return TTF_Init() == 0; },
-                        "Initializing SDL_ttf...",
-                        "SDL True Type Font loader failed to initialize!");
+            LOG_TASK([]() { return TTF_Init() == 0; },
+                     "Starting SDL_ttf...",
+                     "SDL_ttf failed to initialize! Continuing with no font support.");
 
-
+            if (TTF_WasInit()) {
+                LOG_TASK([]() { return FontManager::start_up(); },
+                         "Starting core font manager...",
+                         "Font manager failed to initialize! Continuing with limited to no font support.");
+            }
         }
-        return m_library_initialized = true;
+        return m_core_system_initialized = true;
     }
 
-    void SDL_System::shut_down() {
-        LOG_STATUS("Shutting down the SDL_ttf...");
-        TTF_Quit();
+    void System::shut_down() {
+        if (is_initialized()) {
+            LOG_STATUS("Shutting down core font manager...");
+            FontManager::shut_down();
 
-        LOG_STATUS("Shutting down the SDL_image...");
-        IMG_Quit();
+            LOG_STATUS("Shutting down the SDL_ttf...");
+            TTF_Quit();
 
-        LOG_STATUS("Shutting down the SDL2 library...");
-        SDL_Quit();
+            LOG_STATUS("Shutting down the SDL_image...");
+            IMG_Quit();
 
-        m_library_initialized = false;
+            LOG_STATUS("Shutting down the SDL2 library...");
+            SDL_Quit();
+
+            m_core_system_initialized = false;
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Private API
 ////////////////////////////////////////////////////////////////////////////////
 
-    SDL_System::SDL_System() = default;
-    SDL_System::~SDL_System() { shut_down(); }
+    System::System() = default;
+    System::~System() { shut_down(); }
 
 } // Core namespace.

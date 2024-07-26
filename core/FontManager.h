@@ -6,28 +6,28 @@
  *          file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#ifndef GOLD_CARTRIDGE_SDL_SYSTEM_H
-#define GOLD_CARTRIDGE_SDL_SYSTEM_H
+#ifndef GOLD_CARTRIDGE_FONT_MANAGER_H
+#define GOLD_CARTRIDGE_FONT_MANAGER_H
 
 namespace Core {
 
-    class SDL_System {
+    class FontManager {
     public:
         static bool is_initialized();
         static bool start_up();
         static void shut_down();
 
-        SDL_System(const SDL_System&) = delete;
-        void operator=(const SDL_System&) = delete;
+        FontManager(const FontManager&) = delete;
+        void operator=(const FontManager&) = delete;
 
     private:
-        SDL_System();
-        ~SDL_System();
+        FontManager();
+        ~FontManager();
 
     private:
-        static bool m_library_initialized;
+        static bool m_manager_initialized;
     };
 
 } // Core
 
-#endif //GOLD_CARTRIDGE_SDL_SYSTEM_H
+#endif //GOLD_CARTRIDGE_FONT_MANAGER_H
