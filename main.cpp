@@ -13,7 +13,7 @@
 int main(int num_args, char** args) {
     (void)num_args; // Ignored.
     (void)args;     // Ignored.
-    Core::SDL_System::instance().startup();
+    Core::SDL_System::start_up();
     Rendering::Window main_window;
 
     main_window.set_user_update_callback([]() {
@@ -26,6 +26,5 @@ int main(int num_args, char** args) {
 
     main_window.run();
 
-    Core::SDL_System::instance().shutdown();
     return 0;
 }

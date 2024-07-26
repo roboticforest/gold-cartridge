@@ -13,28 +13,19 @@ namespace Core {
 
     class SDL_System {
     public:
-
-        /**
-         * Get the global SDL_System instance to perform global actions on the SDL library.
-         * @return The global SDL_System singleton.
-         */
-        static SDL_System& instance();
         static bool is_initialized();
+        static bool start_up();
+        static void shut_down();
 
-        // Prevent copying.
         SDL_System(const SDL_System&) = delete;
         void operator=(const SDL_System&) = delete;
 
-        bool startup();
-        void shutdown();
-
     private:
-
-        // Prevent manual instantiation.
         SDL_System();
         ~SDL_System();
 
-        static bool library_initialized;
+    private:
+        static bool m_library_initialized;
     };
 
 } // Core
