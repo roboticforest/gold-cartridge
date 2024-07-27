@@ -19,13 +19,14 @@ struct SDL_Renderer;
 
 namespace Rendering {
 
-    using UpdateCallback = std::function<void()>;
-    using DrawCallback = std::function<void(SDL_Renderer* renderer)>;
-    using Milliseconds = std::chrono::duration<double, std::milli>;
-    using SDL_WindowPtr = std::unique_ptr<SDL_Window, void (*)(SDL_Window*)>;
-    using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)>;
-
     class Window {
+    public:
+        using UpdateCallback = std::function<void()>;
+        using DrawCallback = std::function<void(SDL_Renderer* renderer)>;
+        using Milliseconds = std::chrono::duration<double, std::milli>;
+        using SDL_WindowPtr = std::unique_ptr<SDL_Window, void (*)(SDL_Window*)>;
+        using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)>;
+
     public:
         Window();
         Window(int window_width, int window_height, std::string window_title);

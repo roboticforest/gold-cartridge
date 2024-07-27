@@ -146,8 +146,8 @@ namespace Rendering {
         // window freezes, even if the events are just thrown away. SDL event
         // filters don't count, and users might not create their own event
         // processing loop.
-        SDL_Event currentEvent;
-        while (SDL_PollEvent(&currentEvent)) {}
+        SDL_Event current_event;
+        while (SDL_PollEvent(&current_event)) {}
     }
 
     void Window::render() {
@@ -163,5 +163,9 @@ namespace Rendering {
         SDL_RenderPresent(m_renderer.get());
     }
 
+// TODO: Change the unique_ptr<Renderer> to a shared_ptr, and create an accessor function that
+//  returns a weak_ptr reference. This will make it very easy to create buttons that have access
+//  to the renderer for the main_window since user code generally only has access to the renderer
+//  during render time.
 
 } // Rendering namespace
