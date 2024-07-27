@@ -105,7 +105,7 @@ namespace Core {
                      "SDL_ttf failed to initialize! Continuing with no font support.");
 
             if (TTF_WasInit()) {
-                LOG_TASK([]() { return FontManager::start_up(); },
+                LOG_TASK([]() { return FontManager::access().start_up(); },
                          "Starting core font manager...",
                          "Font manager failed to initialize! Continuing with limited to no font support.");
             }
@@ -116,7 +116,7 @@ namespace Core {
     void System::shut_down() {
         if (is_initialized()) {
             LOG_STATUS("Shutting down core font manager...");
-            FontManager::shut_down();
+            FontManager::access().shut_down();
 
             LOG_STATUS("Shutting down the SDL_ttf...");
             TTF_Quit();
