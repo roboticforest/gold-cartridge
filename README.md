@@ -4,46 +4,74 @@
 
 Jump-start your Simple Direct-Media Layer projects with this foundational code base.
 
-The aim of this project is to provide a simplified starting point for developers new to SDL2, or anyone that just wants to quickly test an idea without the hassle of setup and configuration.
+The aim of this project is to provide a simplified starting point for developers new to SDL2, or for anyone that just wants to quickly test an idea without the hassle of setup and configuration.
+
+In short, this is SDL2 boilerplate, with extras.
 
 ### Features
 
-- Initializes SDL2, SDL2\_image, and SDL2\_ttf.
-- Cross-platform support (Linux, Windows).
-- Provides a default _window, _renderer, and font.
+- **Quick To Start:** Simply click the "Use this template" button to make copy of this repo, then edit the provided callback functions in `main.cpp`. This should run on Windows and Linux with no further setup.
+- **Simplified Initialization:** SDL2, SDL_image, and SDL_ttf are already configured and initialized. A simple `Window` class runs all of your code, provides a renderer, and handles window close events. You may optionally supply your own event handling code to deal with keyboard or mouse input.
+- **Fixed Update Rate:** Your update callback runs at a fixed 60Hz, ensuring smooth and consistent behavior for your simulations and games. Update rates and permissible frame drops are customizable.
+- **Font Rendering:** Includes very simple font rendering and text display with a default font provided.
+- **Standard Colors:** Provides a collection of standard web colors for your convenience, all provided as SDL_Color structures.
+- **Simple UI Elements:** Includes a basic button object for creating interactive UI elements.
 
-### Quick Start
+### Prerequisites
 
-1. `git clone git@github.com:roboticforest/gold-cartridge.git`
+- **C++:** This project uses the C++20 language standard.
+
+- **CMake:** Version 3.19 or later.
+
+- **Simple DirectMedia Layer 2:** SDL2, SDL_image, SDL_ttf, SDL_net, and SDL_mixer should already be installed on your machine. For best results use default installation locations.
+
+## Getting Started
+
+1. Run `git clone git@github.com:roboticforest/gold-cartridge.git`.
 2. Open in a C++ IDE with CMake support.
-3. Build and run (you should the test application).
+3. Build and run (you should see an empty window).
 4. Edit `main.cpp` to your liking.
+
+If you need/prefer to use a Linux-style terminal:
+
+```bash
+git clone git@github.com:roboticforest/gold-cartridge.git
+cd gold_cartridge
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
 
 ## Project Structure
 
 This template repo is intended to get simple projects up and running in minutes or less. Basic SDL2 configuration and initialization are handled with placeholders marked out for your own code.
 
-If you wish to do something more complex you are free to ignore any of the provided files or functions, or tweak them to better fit your needs.
+If you wish to do something more complex, you are free to ignore, modify, or tweak any of the provided files, functions, or classes to suit your needs.
 
-### What's Provided
+### What Is Where
 
-- `main.cpp` -- Program entry point. Check the comments for guide posts.
+- `main.cpp`
+    - Program entry point, and where your code is expected to go.
 
-  SDL2 start-up occurs here and a simple game-loop is in place. Empty `input()`, `update()`, and `draw()` functions are provided for you to fill in with your own code.
+    - SDL2 and Window start-up occur here. Empty callback functions for input handling, updating, and drawing are provided for you to fill in.
 
-  Most simple projects are expected to only ever need to edit this one file.
+    - Most quick or simple projects are expected to only need to edit this one file. Feel free to create as many, or as few, supporting code files as you need though.
 
-- `sdl2_loading.h` -- Handles SDL2 start-up and shutdown.
+- `core/`
+    - `System.h`: A singleton manager class that initializes SDL2 and all other managers.
+    - `FontManager.h`: A singleton manager class for loading and rendering fonts.
 
-- `globals.h` -- **Semi-Optional** -- Holds variables for the default _window, _renderer, and font, plus other data for internal testing and debugging.
+- `rendering/`
+    - `Windowing.h`: A basic Window class. It manages the internal "game loop", managing timing, calls upon your supplied processing and drawing code, and provides access to an internal SDL_Renderer.
+    - `Colors.h`: Provides web colors for convenience.
 
-  Edit or ignore this file if you plan on doing something non-trivial with how SDL2 is initialized.
+- `ui/`
+    - `Button.h`: A basic Button class.
 
-- `button.h & .cpp` -- **Optional** -- Provides a simple clickable button.
-
-- `colors.h & .cpp` -- **Optional** -- Provides many predefined `SDL_Color` constants.
-
-- `test_*` -- **Optional** -- Safe to ignore. Provides functions for testing, debugging, and logging SDL2's setup.
+- `resources/`
+  - `fonts/`: Holds the default font.
+  - `img/`: Holds a sample image you can use for rendering tests.
 
 ## Contribute
 
