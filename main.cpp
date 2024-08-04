@@ -17,11 +17,11 @@ int main(int num_args, char** args) {
     Core::System::start_up();
     Rendering::Window main_window;
 
-    main_window.set_user_update_callback([]() {
+    main_window.set_user_update_callback([&]() {
         // Your update code here...
     });
 
-    main_window.set_user_draw_callback([](SDL_Renderer* renderer) {
+    main_window.set_user_draw_callback([&](SDL_Renderer* renderer) {
         // Your graphics rendering code here...
     });
 
