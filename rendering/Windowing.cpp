@@ -112,6 +112,8 @@ namespace Rendering {
         using Clock = std::chrono::high_resolution_clock;
         using TimeStamp = std::chrono::time_point<Clock>;
 
+        this->update(); // Create an initial state to render.
+
         Milliseconds lag_time(0.0);
         TimeStamp    previous_time = Clock::now();
 
