@@ -74,14 +74,14 @@ namespace Rendering {
     void Window::set_user_update_callback(UpdateCallback update_fn) { m_process_user_updates = std::move(update_fn); }
     void Window::set_user_draw_callback(DrawCallback draw_fn) { m_process_user_rendering = std::move(draw_fn); }
 
-    [[maybe_unused]] int Window::max_updates_per_frame() const { return m_max_updates_per_frame; }
-    [[maybe_unused]] void Window::max_updates_per_frame(int new_update_limit) {
+    [[maybe_unused]] int Window::update_limit_per_frame() const { return m_max_updates_per_frame; }
+    [[maybe_unused]] void Window::update_limit_per_frame(int new_update_limit) {
         if (new_update_limit <= 0) { m_max_updates_per_frame = 1; }
         else { m_max_updates_per_frame = new_update_limit; }
     }
 
-    [[maybe_unused]] double Window::update_interval_ms() const { return m_update_interval_ms.count(); }
-    [[maybe_unused]] void Window::update_interval_ms(double new_ms_interval) {
+    [[maybe_unused]] double Window::target_update_time_ms() const { return m_update_interval_ms.count(); }
+    [[maybe_unused]] void Window::target_update_time_ms(double new_ms_interval) {
         m_update_interval_ms = Milliseconds(new_ms_interval);
     }
 

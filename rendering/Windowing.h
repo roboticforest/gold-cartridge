@@ -35,10 +35,10 @@ namespace Rendering {
         void set_user_update_callback(UpdateCallback update_fn);
         void set_user_draw_callback(DrawCallback draw_fn);
 
-        int max_updates_per_frame() const;
-        void max_updates_per_frame(int new_update_limit);
-        double update_interval_ms() const;
-        void update_interval_ms(double new_ms_interval);
+        int update_limit_per_frame() const;
+        void update_limit_per_frame(int new_update_limit);
+        double target_update_time_ms() const;
+        void target_update_time_ms(double new_ms_interval);
 
         int width() const;
         int height() const;
